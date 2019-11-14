@@ -33,6 +33,6 @@ vtransakcie()
 ##sb.config( command = mylist.yview )  
 def statistiky():
     canvas.create_text(sirka//2+sirka//4, vyska//10, text='ŠTATISTIKY', font='Arial 20')
-        canvas.create_line(sirka//4-200, vyska//10+13,sirka//4+200, vyska//10+13, width=3)
+    canvas.create_line(sirka//4-200, vyska//10+13,sirka//4+200, vyska//10+13, width=3)
    
 
