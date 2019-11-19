@@ -3,12 +3,6 @@ sirka=1280
 vyska=600
 canvas=tkinter.Canvas(width=sirka, height=vyska)
 canvas.pack()
-echo '# Bezpe-nostn-audit' >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git remote add origin https://github.com/Zdarilekova/Bezpe-nostn-audit.git
-git push -u origin master
 def vtransakcie():
     canvas.create_text(sirka//4, vyska//10, text='VŠETKY TRANSAKCIE BANKY', font='Arial 20')
     canvas.create_line(sirka//4-200, vyska//10+13,sirka//4+200, vyska//10+13, width=3)
@@ -53,7 +47,6 @@ def filtrovat():
     canvas.create_rectangle(sirka//10,vyska//3,sirka-sirka//10, vyska)
 def spat():
     canvas.delete('all')
-    entry1.destroy()
     statistiky()
     vtransakcie()
 statistiky()
