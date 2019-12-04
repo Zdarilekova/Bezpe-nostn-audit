@@ -3,19 +3,38 @@ from tkinter import *
 import calendar
 import datetime
 import sys
-sirka=1220
-vyska=600
+sirka=1280
+vyska=720
 root=tk.Tk()
 canvas=tk.Canvas(root,width=sirka, height=vyska, bg='#71CAE7')
 canvas.pack()
 
+def frame0():
+    global frame, canv,root
+    frame=tk.Frame(root,width=sirka, height=vyska)
+    frame.place(x=0,y=0)
+    canv=tk.Canvas(frame,width=sirka, height=vyska, bg='#71CAE7')
+    canv.pack()
+    canv.create_text(sirka//2, 50, text='BEZPEČNOSTNÝ AUDIT', font='Arial 30')
+    canv.create_text(sirka//2, vyska//2-50, text='MENO:', font='Arial 30', anchor='w')
+    canv.create_text(sirka//2, vyska//2, text='HESLO:', font='Arial 30', anchor='w')
+    meno=tk.Entry(font="Helvetica 15 ", width=30).place(relx=.62,rely=.410, width=250)
+    heslo=tk.Entry(font="Helvetica 15 ", width=30).place(relx=.62,rely=.480, width=250)
+    obr = tk.PhotoImage(file='menu.png')
+    obr_id = canv.create_image(500, 250, image=obr)
+frame0()
 def frame1():
     global frame, can,root
     frame=tk.Frame(root,width=sirka, height=vyska)
     frame.place(x=0,y=0)
     can=tk.Canvas(frame,width=sirka, height=vyska, bg='#71CAE7')
     can.pack()
-frame1()
+    statistiky()
+    vtransakcie()
+    button1= tk.Button(text='FILTER',command=filterf)
+    button1.pack()
+    button1.place(relx=.02, rely=.100, anchor="w")
+
 def vtransakcie():
     can.create_line(sirka//4-200, vyska//10+13,sirka//4+200, vyska//10+13, width=3)
     can.create_text(sirka//4, vyska//10, text='VŠETKY TRANSAKCIE BANKY', font='Arial 20')
@@ -218,13 +237,13 @@ def spat():
     button1= tk.Button(text='FILTER',command=filterf)
     button1.pack()
     button1.place(relx=.02, rely=.100, anchor="w")
-statistiky()
-vtransakcie()
-button1= tk.Button(text='FILTER',command=filterf)
-button1.pack()
-button1.place(relx=.02, rely=.100, anchor="w")
-
+login= tk.Button(text='PRIHLÁSIŤ SA',command=frame1)
+login.pack()
+login.place(relx=.85, rely=.470, anchor="w")
+login.config( height =5, width = 20 )
 root.mainloop()
+
+
 
 
 
