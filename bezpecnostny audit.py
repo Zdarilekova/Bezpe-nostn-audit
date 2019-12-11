@@ -10,7 +10,7 @@ canvas=tk.Canvas(root,width=sirka, height=vyska, bg='#71CAE7')
 canvas.pack()
 
 def frame0():
-    global frame, canv,root
+    global frame, canv,root,menuImg, labelMenuImg
     frame=tk.Frame(root,width=sirka, height=vyska)
     frame.place(x=0,y=0)
     canv=tk.Canvas(frame,width=sirka, height=vyska, bg='#71CAE7')
@@ -22,6 +22,11 @@ def frame0():
     heslo=tk.Entry(font="Helvetica 15 ", width=30).place(relx=.62,rely=.480, width=250)
 ##    obr = tk.PhotoImage(file='menu.png')
 ##    obr_id = canv.create_image(500, 250, image=obr)
+    menuImg = tk.PhotoImage(master=canv,file='menu.png')
+    labelMenuImg = tk.Label(image = menuImg,borderwidth=0)
+    labelMenuImgimage = menuImg
+    labelMenuImg.pack()
+    labelMenuImg.place(x=0.03*sirka,y=vyska-(0.55*vyska), anchor="w")
 frame0()
 
 def frame1():
@@ -41,11 +46,22 @@ def frame1():
 
 def vtransakcie():
     can.create_line(sirka//4-200, vyska//10+13,sirka//4+200, vyska//10+13, width=3)
+    puspesne=open('TRANSAKCIE_PAYWALL.txt', 'r')
+    riadok4=puspesne.readline().strip()
+    pocetuspesne=0
+    pocetneuspesne=0
+    for riadok4 in puspesne:
+        e=riadok4.split(';')
+        cisuspesne=e[8]
+        if cisuspesne!=1:
+            pocetuspesne+=1
+        else:
+            pocetneuspesne+=1
     can.create_text(sirka//4, vyska//10, text='VŠETKY TRANSAKCIE BANKY', font='Arial 20')
     can.create_rectangle(sirka//4-250,vyska//10+35, sirka//4+250, vyska//10+65, fill='forestgreen', width=4)
-    can.create_text(sirka//4,vyska//10+50, text='ÚSPEšNé TRANSAKCIE: (pocet)',font='Arial 12', fill='white')
+    can.create_text(sirka//4,vyska//10+50, text='ÚSPEšNé TRANSAKCIE:'+' '+str(pocetuspesne),font='Arial 12', fill='white')
     can.create_rectangle(sirka//4-250,vyska//10+85, sirka//4+250, vyska//10+105, fill='firebrick', outline='firebrick', width=5)
-    can.create_text(sirka//4,vyska//10+95, text='NEÚSPEšNé TRANSAKCIE: ',font='Arial 12', fill='white')
+    can.create_text(sirka//4,vyska//10+95, text='NEÚSPEšNé TRANSAKCIE: '+str(pocetneuspesne),font='Arial 12', fill='white')
     can.create_rectangle(sirka//4-250,vyska//10+102+4,sirka//4+250, vyska-4, outline='firebrick', width=5)
     can.create_rectangle(sirka//4-250+2,vyska//10+102+6,sirka//4+250-2, vyska-6, outline='black', width=4, fill='white')
     can.create_line(sirka//2,0,sirka//2,vyska,width=3)
@@ -53,28 +69,62 @@ def vtransakcie():
 def statistiky():
     can.create_rectangle(sirka//2+200, vyska//10-20,sirka//2+435, vyska//10+13, width=3, fill='white')
     can.create_text(sirka//2+sirka//4, vyska//10, text='ŠTATISTIKY', font='Arial 20')
-    can.create_text(sirka//2+15, vyska//10+50, text='Priemerná výška vkladu:', font='Arial 20',anchor='w')
+##   ............
+    vklad=open('TRANSAKCIE_UCTY.txt','r')
+    riadok1=vklad.readline().strip()
+    vyskav=0
+    pocetvkladov=0
+    for riadok1 in vklad:
+        b=riadok1.split(';')
+        suma=b[5]
+        ##idst=b[6] ##id suvisiacej transakcie
+        suma1=str(suma)
+        print(suma1)
+        if int(suma1)>0:
+            vyskav+=int(suma)
+            pocetvkladov+=1
+    can.create_text(sirka//2+15, vyska//10+50, text='Priemerná výška vkladu:'+' '+str(vyskav//pocetvkladov), font='Arial 20',anchor='w')
+## ....................   
     dlh=open('karty.txt', 'r')
     riadok=dlh.readline().strip()
-    pole=[]
     pocetr=0
     spolu=0
     for riadok in dlh:
-        print(riadok)
         a=riadok.split(';')
-        idc=a[0]
-        vydavatel=a[1]
-        typk=a[2]
-        cislok=a[3]
-        datump=a[4] ##datum platnosti karty
-        cvvkod=a[5]
-        iductu=a[6]
         dlznasuma=a[7]
         pocetr+=1
         spolu+=int(dlznasuma)
     dlzobap=spolu//pocetr
     can.create_text(sirka//2+15, vyska//10+90, text='Priemerný dlh na kreditnej karte:'+' '+str(dlzobap), font='Arial 20',anchor='w')    
-    can.create_text(sirka//2+15, vyska//10+130, text='Priemerná výška transakcie:', font='Arial 20',anchor='w')
+##..........................................
+    pvt1=open('TRANSAKCIE_UCTY.txt','r')
+    pvt2=open('TRANSAKCIE_PAYWALL.txt','r')
+    pvt3=open('TRANSAKCIE_KARTY.txt','r')
+    r1=pvt1.readline().strip()
+    r2=pvt2.readline().strip()
+    r3=pvt3.readline().strip()
+    spolu=0
+    spolu1=0
+    spolu2=0
+    spolu3=0
+    priemer=0
+    for r1 in pvt1:
+        h1=r1.split(';')
+        pvt11=h1[5]
+        spolu1+=int(pvt11)
+        priemer+=1
+    for r2 in pvt2:
+        h2=r2.split(';')
+        pvt22=h2[2]
+        spolu2+=int(pvt22)
+        priemer+=1
+    for r3 in pvt3:
+        h3=r3.split(';')
+        pvt33=h3[2]
+        spolu3+=int(pvt33)
+        priemer+=1
+    spolu=spolu1+spolu2+spolu3
+    can.create_text(sirka//2+15, vyska//10+130, text='Priemerná výška transakcie:  '+str(spolu//priemer), font='Arial 20',anchor='w')
     can.create_text(sirka//2+15, vyska//10+170, text='Priemerný počet denných transakcií:', font='Arial 20',anchor='w')
     dlh.close()
 def filterf():
@@ -86,6 +136,7 @@ def filterf():
     can=tk.Canvas(frame,width=sirka, height=vyska, bg='#71CAE7')
     can.pack()
     can.create_rectangle(0,0,sirka,vyska, outline='skyblue', fill='skyblue')
+
     can.create_text(sirka//4, vyska//10+15, text='ČÍSLO KARTY:', font='Arial 20',anchor='e')
     cislokarty=tk.Entry(font="Helvetica 15 ", width=15).place(relx=.25,rely=.1, width=250)
     can.create_text(sirka//4, vyska//10+45, text='ČÍSLO ÚČTU:', font='Arial 20',anchor='e')
@@ -231,12 +282,24 @@ def filtrovat():
     global frame, can
     scrollbar = tk.Scrollbar(root)
     scrollbar.place(x=sirka-120,y=200, height=vyska-200, width=20)
+    ##    ...................
+    cislokarty1=open('karty.txt', 'r')
+    riadok2=cislokarty1.readline().strip()
+    cislouctu1=open('UCTY.txt', 'r')
+    riadok3=cislouctu1.readline().strip()
     trans_list = tk.Listbox(root, font='Arial 15')
     trans_list.place(x=100,y=200,width=sirka-220,height=vyska-200)
-    for x in range(100):    
-        trans_list.insert(x*3, 'Číslo Karty'+100*' ' +'SUMA')
-        trans_list.insert(x*3+1, 'Číslo Účtu'+100*' ' +'DÁTUM')
+    for x in range(100):
+        for riadok2 in cislokarty1:
+            c=riadok2.split(';')
+            ciskarty=c[3]
+            trans_list.insert(x*3, 'Číslo Karty'+'  '+ciskarty+70*' ' +'SUMA')
+        for riadok3 in cislouctu1:
+            d=riadok3.split(';')
+            cisuctu=d[2]
+            trans_list.insert(x*3+1, 'Číslo Účtu'+'  '+cisuctu+70*' ' +'DÁTUM')
         trans_list.insert(x*3+2, '')
+    
     trans_list.config(yscrollcommand=scrollbar.set)
     scrollbar.config(command=trans_list.yview)
     
@@ -270,13 +333,3 @@ login.pack()
 login.place(relx=.85, rely=.470, anchor="w")
 login.config( height =5, width = 20 )
 root.mainloop()
-
-
-
-
-
-
-   
-
-
-
