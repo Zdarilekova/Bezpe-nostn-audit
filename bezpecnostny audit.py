@@ -20,8 +20,6 @@ def frame0():
     canv.create_text(sirka//2, vyska//2, text='HESLO:', font='Arial 30', anchor='w')
     meno=tk.Entry(font="Helvetica 15 ", width=30).place(relx=.62,rely=.410, width=250)
     heslo=tk.Entry(font="Helvetica 15 ", width=30).place(relx=.62,rely=.480, width=250)
-##    obr = tk.PhotoImage(file='menu.png')
-##    obr_id = canv.create_image(500, 250, image=obr)
     menuImg = tk.PhotoImage(master=canv,file='menu.png')
     labelMenuImg = tk.Label(image = menuImg,borderwidth=0)
     labelMenuImgimage = menuImg
