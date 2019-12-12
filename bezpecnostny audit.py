@@ -275,6 +275,28 @@ def filterf():
     kalendar=tk.Button(text='kalendár', command=kalendar)
     kalendar.pack()
     kalendar.place(relx=.6, rely=.200)
+    scrollbar = tk.Scrollbar(root)
+    scrollbar.place(x=sirka-120,y=200, height=vyska-200, width=20)
+    ##    ...................
+    cislokarty1=open('karty.txt', 'r')
+    riadok2=cislokarty1.readline().strip()
+    cislouctu1=open('UCTY.txt', 'r')
+    riadok3=cislouctu1.readline().strip()
+    trans_list = tk.Listbox(root, font='Arial 15')
+    trans_list.place(x=100,y=200,width=sirka-220,height=vyska-200)
+    for x in range(100):
+        for riadok2 in cislokarty1:
+            c=riadok2.split(';')
+            ciskarty=c[3]
+            trans_list.insert(x*3, 'Číslo Karty'+'  '+ciskarty+70*' ' +'SUMA')
+        for riadok3 in cislouctu1:
+            d=riadok3.split(';')
+            cisuctu=d[2]
+            trans_list.insert(x*3+1, 'Číslo Účtu'+'  '+cisuctu+70*' ' +'DÁTUM')
+        trans_list.insert(x*3+2, '')
+    
+    trans_list.config(yscrollcommand=scrollbar.set)
+    scrollbar.config(command=trans_list.yview)
 
 def filtrovat():
     global frame, can
