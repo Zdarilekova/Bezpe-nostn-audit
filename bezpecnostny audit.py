@@ -317,7 +317,7 @@ def filtrovat():
     riadok3=cislouctu1.readline().strip()
     trans_list = tk.Listbox(root, font='Arial 15')
     trans_list.place(x=100,y=200,width=sirka-220,height=vyska-200)
-    for x in range(100):
+    for x in range(1):
         for i in range(3):
             if fcisk==pole[i]:
                  trans_list.insert(x*3+1, 'Číslo Účtu'+'  '+poleu[i]+70*' ' +'DÁTUM')
