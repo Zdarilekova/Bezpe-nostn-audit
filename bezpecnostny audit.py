@@ -4,7 +4,7 @@ import calendar
 import datetime
 import sys
 sirka=1280
-vyska=720
+vyska=620
 root=tk.Tk()
 canvas=tk.Canvas(root,width=sirka, height=vyska, bg='#71CAE7')
 canvas.pack()
@@ -133,10 +133,35 @@ def filterf():
     frame.place(x=0,y=0)
     can=tk.Canvas(frame,width=sirka, height=vyska, bg='#71CAE7')
     can.pack()
-
+    scrollbar = tk.Scrollbar(root)
+    scrollbar.place(x=sirka-120,y=200, height=vyska-200, width=20)
+    ##    ...................
+    cislokarty1=open('karty.txt', 'r')
+    riadok2=cislokarty1.readline().strip()
+    cislouctu1=open('UCTY.txt', 'r')
+    riadok3=cislouctu1.readline().strip()
+    trans_list = tk.Listbox(root, font='Arial 15')
+    trans_list.place(x=100,y=200,width=sirka-220,height=vyska-200)
+    pole=[]
+    poleu=[]
+    for x in range(50):
+        for riadok3 in cislouctu1:
+            d=riadok3.split(';')
+            cisuctu=d[2]
+            poleu.append(cisuctu)
+            trans_list.insert(x*3+1, 'Číslo Účtu'+'  '+cisuctu+70*' ' +'DÁTUM')
+            for riadok2 in cislokarty1:
+                c=riadok2.split(';')
+                ciskarty=c[3]
+                pole.append(ciskarty)
+                trans_list.insert(x*3, 'Číslo Karty'+'  '+ciskarty+70*' ' +'SUMA')
+        trans_list.insert(x*3+2, '')
+    
+    trans_list.config(yscrollcommand=scrollbar.set)
+    scrollbar.config(command=trans_list.yview)
     can.create_text(sirka//4, vyska//10+15, text='ČÍSLO KARTY:', font='Arial 20',anchor='e')
-    cislokarty=tk.Entry(font="Helvetica 15 ", width=15)
-    cislokarty.pack()
+    cislokarty=tk.Entry()
+##    cislokarty.pack()
     can.create_text(sirka//4, vyska//10+45, text='ČÍSLO ÚČTU:', font='Arial 20',anchor='e')
     cislouctu=tk.Entry(font="Helvetica 15 ", width=15)
     cislouctu.pack()
@@ -276,32 +301,7 @@ def filterf():
     kalendar=tk.Button(text='kalendár', command=kalendar)
     kalendar.pack()
     kalendar.place(relx=.6, rely=.200)
-    scrollbar = tk.Scrollbar(root)
-    scrollbar.place(x=sirka-120,y=200, height=vyska-200, width=20)
-    ##    ...................
-    cislokarty1=open('karty.txt', 'r')
-    riadok2=cislokarty1.readline().strip()
-    cislouctu1=open('UCTY.txt', 'r')
-    riadok3=cislouctu1.readline().strip()
-    trans_list = tk.Listbox(root, font='Arial 15')
-    trans_list.place(x=100,y=200,width=sirka-220,height=vyska-200)
-    pole=[]
-    poleu=[]
-    for x in range(50):
-        for riadok3 in cislouctu1:
-            d=riadok3.split(';')
-            cisuctu=d[2]
-            poleu.append(cisuctu)
-            trans_list.insert(x*3+1, 'Číslo Účtu'+'  '+cisuctu+70*' ' +'DÁTUM')
-            for riadok2 in cislokarty1:
-                c=riadok2.split(';')
-                ciskarty=c[3]
-                pole.append(ciskarty)
-                trans_list.insert(x*3, 'Číslo Karty'+'  '+ciskarty+70*' ' +'SUMA')
-        trans_list.insert(x*3+2, '')
     
-    trans_list.config(yscrollcommand=scrollbar.set)
-    scrollbar.config(command=trans_list.yview)
 
 def filtrovat():
     global frame, can, cislokarty, ciskarty, pole, poleu, cislouctu
@@ -317,15 +317,16 @@ def filtrovat():
     riadok3=cislouctu1.readline().strip()
     trans_list = tk.Listbox(root, font='Arial 15')
     trans_list.place(x=100,y=200,width=sirka-220,height=vyska-200)
-    for i in range(3):
-        if fcisk==pole[i]:
-             trans_list.insert(x*3+1, 'Číslo Účtu'+'  '+poleu[i]+70*' ' +'DÁTUM')
-             trans_list.insert(x*3, 'Číslo Karty'+'  '+pole[i]+70*' ' +'SUMA')
-             trans_list.insert(x*3+2, '')
-        elif fcisu==poleu[i]:
-             trans_list.insert(x*3+1, 'Číslo Účtu'+'  '+poleu[i]+70*' ' +'DÁTUM')
-             trans_list.insert(x*3, 'Číslo Karty'+'  '+pole[i]+70*' ' +'SUMA')
-             trans_list.insert(x*3+2, '')
+    for x in range(100):
+        for i in range(3):
+            if fcisk==pole[i]:
+                 trans_list.insert(x*3+1, 'Číslo Účtu'+'  '+poleu[i]+70*' ' +'DÁTUM')
+                 trans_list.insert(x*3, 'Číslo Karty'+'  '+pole[i]+70*' ' +'SUMA')
+                 trans_list.insert(x*3+2, '')
+            elif fcisu==poleu[i]:
+                 trans_list.insert(x*3+1, 'Číslo Účtu'+'  '+poleu[i]+70*' ' +'DÁTUM')
+                 trans_list.insert(x*3, 'Číslo Karty'+'  '+pole[i]+70*' ' +'SUMA')
+                 trans_list.insert(x*3+2, '')
 ##    for x in range(50):
 ##        for riadok3 in cislouctu1:
 ##            d=riadok3.split(';')
