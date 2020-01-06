@@ -4,7 +4,7 @@ import calendar
 import datetime
 import sys
 sirka=1280
-vyska=620
+vyska=720
 root=tk.Tk()
 canvas=tk.Canvas(root,width=sirka, height=vyska, bg='#71CAE7')
 canvas.pack()
@@ -43,18 +43,42 @@ def frame1():
     button3.place(relx=.9, rely=.05, anchor="w")
 
 def vtransakcie():
+    global root,d,c, cislokarty, cisuctu, cislouctu1, cislokarty1,riadok3, riadok2,poleus
     can.create_line(sirka//4-200, vyska//10+13,sirka//4+200, vyska//10+13, width=3)
     puspesne=open('TRANSAKCIE_PAYWALL.txt', 'r')
-    riadok4=puspesne.readline().strip()
     pocetuspesne=0
     pocetneuspesne=0
+    poleus=[]
+    riadok4=puspesne.readline().strip()
     for riadok4 in puspesne:
-        e=riadok4.split(';')
-        cisuspesne=e[8]
-        if cisuspesne!=1:
+        l=riadok4.split(';')
+        cisuspesne=l[8]
+        print(cisuspesne)
+        poleus.append(cisuspesne)
+        if cisuspesne==str(1):
             pocetuspesne+=1
-        else:
+        elif cisuspesne==str(0):
             pocetneuspesne+=1
+            scrollbar = tk.Scrollbar(root)
+            scrollbar.place(x=sirka//4+250-2, y=vyska-6, height=vyska-200, width=20)
+            riadok4=puspesne.readline().strip()
+            cislokarty1=open('karty.txt', 'r')
+            riadok2=cislokarty1.readline().strip()
+            cislouctu1=open('UCTY.txt', 'r')
+            riadok3=cislouctu1.readline().strip()
+            trans_list = tk.Listbox(root, font='Arial 15')
+            trans_list.place(x=sirka//4-250+2,y=vyska//10+102+6,width=500,height=vyska-vyska//10+102+6)
+            for x in range(50):
+                for riadok4 in puspesne:
+                    k=riadok4.split(';')
+                    cistransakcie=k[4]
+                    cisuctuob=k[7]
+                    trans_list.insert(x*3+1, 'Číslo Transakcie'+'  '+cistransakcie)
+                    trans_list.insert(x*3+1, 'Číslo Účtu Obchodníka'+'  '+cisuctuob)
+                    trans_list.insert(x*3+2, '')        
+    
+            trans_list.config(yscrollcommand=scrollbar.set)
+            scrollbar.config(command=trans_list.yview)
     can.create_text(sirka//4, vyska//10, text='VŠETKY TRANSAKCIE BANKY', font='Arial 20')
     can.create_rectangle(sirka//4-250,vyska//10+35, sirka//4+250, vyska//10+65, fill='forestgreen', width=4)
     can.create_text(sirka//4,vyska//10+50, text='ÚSPEšNé TRANSAKCIE:'+' '+str(pocetuspesne),font='Arial 12', fill='white')
@@ -126,7 +150,7 @@ def statistiky():
     can.create_text(sirka//2+15, vyska//10+170, text='Priemerný počet denných transakcií:', font='Arial 20',anchor='w')
     dlh.close()
 def filterf():
-    global frame, can, root, datumod, cislokarty, pole, poleu, cislouctu
+    global frame, can, root, datumod, cislokarty, pole, poleu, cislouctu,d,c, cislokarty, cisuctu, cislouctu1, cislokarty1,riadok3, riadok2
     frame.destroy
     can.destroy
     frame=tk.Frame(root,width=sirka, height=vyska)
@@ -324,8 +348,9 @@ def filtrovat():
                  trans_list.insert(x*3, 'Číslo Karty'+'  '+pole[i]+70*' ' +'SUMA')
                  trans_list.insert(x*3+2, '')
             elif fcisu==poleu[i]:
-                 trans_list.insert(x*3+1, 'Číslo Účtu'+'  '+poleu[i]+70*' ' +'DÁTUM')
                  trans_list.insert(x*3, 'Číslo Karty'+'  '+pole[i]+70*' ' +'SUMA')
+                 trans_list.insert(x*3+1, 'Číslo Účtu'+'  '+poleu[i]+70*' ' +'DÁTUM')
+                 
                  trans_list.insert(x*3+2, '')
 ##    for x in range(50):
 ##        for riadok3 in cislouctu1:
@@ -371,4 +396,3 @@ login.pack()
 login.place(relx=.85, rely=.470, anchor="w")
 login.config( height =5, width = 20 )
 root.mainloop()
-
