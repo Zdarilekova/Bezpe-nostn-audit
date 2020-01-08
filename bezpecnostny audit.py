@@ -4,7 +4,7 @@ import calendar
 import datetime
 import sys
 sirka=1280
-vyska=720
+vyska=620
 root=tk.Tk()
 canvas=tk.Canvas(root,width=sirka, height=vyska, bg='#71CAE7')
 canvas.pack()
@@ -25,8 +25,13 @@ def frame0():
     labelMenuImgimage = menuImg
     labelMenuImg.pack()
     labelMenuImg.place(x=0.03*sirka,y=vyska-(0.55*vyska), anchor="w")
+    
 frame0()
-
+def login():
+    if meno=='mata' and heslo=='1234':
+        frame1()
+    else:
+        canvas.create_text(x=sirka//4*3,y=vyska//4*3, text='NESPRÁVNE MENO ALEBO HESLO')
 def frame1():
     global frame, can,root
     frame=tk.Frame(root,width=sirka, height=vyska)
@@ -162,7 +167,7 @@ def statistiky():
     can.create_text(sirka//2+15, vyska//10+170, text='Priemerný počet denných transakcií:', font='Arial 20',anchor='w')
     dlh.close()
 def filterf():
-    global frame, can, root, datumod, cislokarty, pole, poleu, cislouctu,d,c, cislokarty, cisuctu, cislouctu1, cislokarty1,riadok3, riadok2
+    global frame, can, root, datumod, cislokarty, poleck, polecu, cislouctu,d,c, cislokarty, cisuctu, cislouctu1, cislokarty1,riadok3, riadok2
     frame.destroy
     can.destroy
     frame=tk.Frame(root,width=sirka, height=vyska)
@@ -205,12 +210,13 @@ def filterf():
         trans_list.insert(x*3+2, '')
     trans_list.config(yscrollcommand=scrollbar.set)
     scrollbar.config(command=trans_list.yview)
+##................................................................    
     can.create_text(sirka//4, vyska//10+15, text='ČÍSLO KARTY:', font='Arial 20',anchor='e')
-    cislokarty=tk.Entry()
-##    cislokarty.pack()
+    cislokarty=tk.Entry(font="Helvetica 15 ", width=15)
+    cislokarty.pack()
     can.create_text(sirka//4, vyska//10+45, text='ČÍSLO ÚČTU:', font='Arial 20',anchor='e')
     cislouctu=tk.Entry(font="Helvetica 15 ", width=15)
-    cislouctu.pack()
+    cislouctu.pack(side=LEFT, padx=0, pady=0)
     can.create_text(sirka//2+sirka//11, vyska//10+15, text='SUMA OD', font='Arial 20',anchor='e')
     sumaod=tk.Entry(font="Helvetica 15 ", width=10).place(relx=.60,rely=.1)
     can.create_text(sirka//2+sirka//3, vyska//10+15, text='SUMA DO', font='Arial 20',anchor='e')
@@ -350,7 +356,7 @@ def filterf():
     
 
 def filtrovat():
-    global frame, can, cislokarty, ciskarty, pole, poleu, cislouctu
+    global frame, can, cislokarty, ciskarty, poleck, polecu, cislouctu
     scrollbar = tk.Scrollbar(root)
     scrollbar.place(x=sirka-120,y=200, height=vyska-200, width=20)
     fcisk=cislokarty.get()
@@ -365,13 +371,13 @@ def filtrovat():
     trans_list.place(x=100,y=200,width=sirka-220,height=vyska-200)
     for x in range(1):
         for i in range(3):
-            if fcisk==pole[i]:
-                 trans_list.insert(x*3+1, 'Číslo Účtu'+'  '+poleu[i]+70*' ' +'DÁTUM')
-                 trans_list.insert(x*3, 'Číslo Karty'+'  '+pole[i]+70*' ' +'SUMA')
+            if fcisk==polecu[i]:
+                 trans_list.insert(x*3+1, 'Číslo Účtu'+'  '+poleck[i]+70*' ' +'DÁTUM')
+                 trans_list.insert(x*3, 'Číslo Karty'+'  '+polecu[i]+70*' ' +'SUMA')
                  trans_list.insert(x*3+2, '')
-            elif fcisu==poleu[i]:
-                 trans_list.insert(x*3, 'Číslo Karty'+'  '+pole[i]+70*' ' +'SUMA')
-                 trans_list.insert(x*3+1, 'Číslo Účtu'+'  '+poleu[i]+70*' ' +'DÁTUM')
+            elif fcisu==poleck[i]:
+                 trans_list.insert(x*3+1, 'Číslo Karty'+'  '+polecu[i]+70*' ' +'SUMA')
+                 trans_list.insert(x*3, 'Číslo Účtu'+'  '+poleck[i]+70*' ' +'DÁTUM')
                  trans_list.insert(x*3+2, '')
 ##    for x in range(50):
 ##        for riadok3 in cislouctu1:
@@ -412,7 +418,7 @@ def odhlasit():
     login.pack()
     login.place(relx=.85, rely=.470, anchor="w")
     login.config( height =5, width = 20 )
-login= tk.Button(text='PRIHLÁSIŤ SA',command=frame1)
+login= tk.Button(text='PRIHLÁSIŤ SA',command=login())
 login.pack()
 login.place(relx=.85, rely=.470, anchor="w")
 login.config( height =5, width = 20 )
