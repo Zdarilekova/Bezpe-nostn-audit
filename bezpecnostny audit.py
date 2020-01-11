@@ -4,13 +4,16 @@ import calendar
 import datetime
 import sys
 sirka=1280
-vyska=620
+vyska=720
 root=tk.Tk()
 canvas=tk.Canvas(root,width=sirka, height=vyska, bg='#71CAE7')
 canvas.pack()
 
+
+
+        
 def frame0():
-    global frame, canv,root,menuImg, labelMenuImg
+    global frame, canv,root,menuImg, labelMenuImg, meno, heslo
     frame=tk.Frame(root,width=sirka, height=vyska)
     frame.place(x=0,y=0)
     canv=tk.Canvas(frame,width=sirka, height=vyska, bg='#71CAE7')
@@ -18,20 +21,29 @@ def frame0():
     canv.create_text(sirka//2, 50, text='BEZPEČNOSTNÝ AUDIT', font='Arial 30')
     canv.create_text(sirka//2, vyska//2-50, text='MENO:', font='Arial 30', anchor='w')
     canv.create_text(sirka//2, vyska//2, text='HESLO:', font='Arial 30', anchor='w')
-    meno=tk.Entry(font="Helvetica 15 ", width=30).place(relx=.62,rely=.410, width=250)
-    heslo=tk.Entry(font="Helvetica 15 ", width=30).place(relx=.62,rely=.480, width=250)
+    meno = tk.Entry(canv, font = "Helvetica 15 ", width=30 )
+    meno.pack()
+    meno.place(x = sirka//2 + 150, y = vyska//10*4+10)
+    heslo = tk.Entry(canv, font = "Helvetica 15 ", width=30)
+    heslo.pack()
+    heslo.place(x = sirka//2 + 150, y = vyska//10*4+60)
     menuImg = tk.PhotoImage(master=canv,file='menu.png')
     labelMenuImg = tk.Label(image = menuImg,borderwidth=0)
     labelMenuImgimage = menuImg
     labelMenuImg.pack()
     labelMenuImg.place(x=0.03*sirka,y=vyska-(0.55*vyska), anchor="w")
-    
-frame0()
 def login():
-    if meno=='mata' and heslo=='1234':
+    global meno, heslo
+    loginName = meno.get()
+    loginPassword = heslo.get()
+    print(loginName)
+    if loginName=='mata' and loginPassword=='1234':
         frame1()
     else:
-        canvas.create_text(x=sirka//4*3,y=vyska//4*3, text='NESPRÁVNE MENO ALEBO HESLO')
+        print(loginName)
+##        canv.create_text(x=sirka//4*3, y=vyska//4*3, text='NESPRÁVNE MENO ALEBO HESLO')    
+frame0()
+
 def frame1():
     global frame, can,root
     frame=tk.Frame(root,width=sirka, height=vyska)
@@ -214,17 +226,33 @@ def filterf():
     can.create_text(sirka//4, vyska//10+15, text='ČÍSLO KARTY:', font='Arial 20',anchor='e')
     cislokarty=tk.Entry(font="Helvetica 15 ", width=15)
     cislokarty.pack()
+    cislokarty.place(x = sirka//4+20 , y = vyska//10)
+    
     can.create_text(sirka//4, vyska//10+45, text='ČÍSLO ÚČTU:', font='Arial 20',anchor='e')
     cislouctu=tk.Entry(font="Helvetica 15 ", width=15)
-    cislouctu.pack(side=LEFT, padx=0, pady=0)
+    cislouctu.pack()
+    cislouctu.place(x = sirka//4+20 , y = vyska//10+40)
+    
     can.create_text(sirka//2+sirka//11, vyska//10+15, text='SUMA OD', font='Arial 20',anchor='e')
-    sumaod=tk.Entry(font="Helvetica 15 ", width=10).place(relx=.60,rely=.1)
+    sumaod=tk.Entry(font="Helvetica 15 ", width=10)
+    sumaod.pack()
+    sumaod.place(x = sirka//2+130 , y = vyska//10)
+    
     can.create_text(sirka//2+sirka//3, vyska//10+15, text='SUMA DO', font='Arial 20',anchor='e')
-    sumado=tk.Entry(font="Helvetica 15 ", width=10).place(relx=.85,rely=.1)
+    sumado=tk.Entry(font="Helvetica 15 ", width=10)
+    sumado.pack()
+    sumado.place(x = sirka//7*6 , y = vyska//10)
+    
     can.create_text(sirka//2+sirka//11, vyska//10+45, text='DÁTUM OD', font='Arial 20',anchor='e')
-    datumod=tk.Entry(font="Helvetica 15 ", width=10).place(relx=.60,rely=.15)
+    datumod=tk.Entry(font="Helvetica 15 ", width=10)
+    datumod.pack()
+    datumod.place(x = sirka//2+130 , y = vyska//10+40)
+    
     can.create_text(sirka//2+sirka//3, vyska//10+45, text='DÁTUM DO', font='Arial 20',anchor='e')
-    datumdo=tk.Entry(font="Helvetica 15 ", width=10).place(relx=.85,rely=.15)
+    datumdo=tk.Entry(font="Helvetica 15 ", width=10)
+    datumdo.pack()
+    datumdo.place(x = sirka//7*6 , y = vyska//10+40)
+    
     button2= tk.Button(text='FILTROVAŤ',command=filtrovat)
     button2.pack()
     button2.place(relx=.9, rely=.250, anchor="w")
@@ -418,8 +446,10 @@ def odhlasit():
     login.pack()
     login.place(relx=.85, rely=.470, anchor="w")
     login.config( height =5, width = 20 )
-login= tk.Button(text='PRIHLÁSIŤ SA',command=login())
-login.pack()
-login.place(relx=.85, rely=.470, anchor="w")
-login.config( height =5, width = 20 )
+loginb= tk.Button(text='PRIHLÁSIŤ SA',command=frame1())
+loginb.pack()
+loginb.place(relx=.85, rely=.470, anchor="w")
+loginb.config( height =5, width = 20 )
+
 root.mainloop()
+
