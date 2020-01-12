@@ -14,6 +14,7 @@ canvas.pack()
         
 def frame0():
     global frame, canv,root,menuImg, labelMenuImg, meno, heslo
+    
     frame=tk.Frame(root,width=sirka, height=vyska)
     frame.place(x=0,y=0)
     canv=tk.Canvas(frame,width=sirka, height=vyska, bg='#71CAE7')
@@ -21,10 +22,10 @@ def frame0():
     canv.create_text(sirka//2, 50, text='BEZPEČNOSTNÝ AUDIT', font='Arial 30')
     canv.create_text(sirka//2, vyska//2-50, text='MENO:', font='Arial 30', anchor='w')
     canv.create_text(sirka//2, vyska//2, text='HESLO:', font='Arial 30', anchor='w')
-    meno = tk.Entry(canv, font = "Helvetica 15 ", width=30 )
+    meno = tk.Entry(canv, font = "Helvetica 15 ", width=25)
     meno.pack()
     meno.place(x = sirka//2 + 150, y = vyska//10*4+10)
-    heslo = tk.Entry(canv, font = "Helvetica 15 ", width=30)
+    heslo = tk.Entry(canv, font = "Helvetica 15 ", width=25)
     heslo.pack()
     heslo.place(x = sirka//2 + 150, y = vyska//10*4+60)
     menuImg = tk.PhotoImage(master=canv,file='menu.png')
@@ -33,15 +34,15 @@ def frame0():
     labelMenuImg.pack()
     labelMenuImg.place(x=0.03*sirka,y=vyska-(0.55*vyska), anchor="w")
 def login():
-    global meno, heslo
+    global meno, heslo, canv
     loginName = meno.get()
     loginPassword = heslo.get()
     print(loginName)
     if loginName=='mata' and loginPassword=='1234':
+        print('voiiiiiiii')
         frame1()
     else:
-        print(loginName)
-##        canv.create_text(x=sirka//4*3, y=vyska//4*3, text='NESPRÁVNE MENO ALEBO HESLO')    
+        canv.create_text(sirka//4*3-30, vyska//2+35, text='NESPRÁVNE MENO ALEBO HESLO', fill='red', font='Arial 15')    
 frame0()
 
 def frame1():
@@ -67,31 +68,30 @@ def vtransakcie():
     pocetneuspesne=0
     poleus=[]
     riadok4=puspesne.readline().strip()
+    scrollbar = tk.Scrollbar(root)
+    scrollbar.place(x=sirka//4+250-2, y=vyska-6, height=vyska-200, width=20)
+    trans_list = tk.Listbox(root, font='Arial 15')
+    trans_list.place(x=sirka//4-250+2,y=vyska//10+102+6,width=500,height=vyska-vyska//10+102+6)
     for riadok4 in puspesne:
+        riadok4 = riadok4.strip()
         l=riadok4.split(';')
+        print(l)
         cisuspesne=l[9]
-        print(cisuspesne)
+        print(cisuspesne + 'hhhhhhhhh')
         poleus.append(cisuspesne)
-        if int(cisuspesne)==str(1):
+        if cisuspesne=='1':
             pocetuspesne+=1
-            print(pocetuspesne)
+            
         else:
             pocetneuspesne+=1
-            scrollbar = tk.Scrollbar(root)
-            scrollbar.place(x=sirka//4+250-2, y=vyska-6, height=vyska-200, width=20)
-            trans_list = tk.Listbox(root, font='Arial 15')
-            trans_list.place(x=sirka//4-250+2,y=vyska//10+102+6,width=500,height=vyska-vyska//10+102+6)
-            for x in range(50):
-                for riadok4 in puspesne:
-                    k=riadok4.split(';')
-                    cistransakcie=k[5]
-                    cisuctuob=k[8]
-                    trans_list.insert(x*3+1, 'Číslo Transakcie'+'  '+cistransakcie)
-                    trans_list.insert(x*3+1, 'Číslo Účtu Obchodníka'+'  '+cisuctuob)
-                    trans_list.insert(x*3+2, '')        
+
+            trans_list.insert(END, 'Číslo Transakcie'+'  '+l[5])
+            trans_list.insert(END, 'Číslo Účtu Obchodníka'+'  '+l[8])
+            trans_list.insert(END, '')  
+     
             trans_list.config(yscrollcommand=scrollbar.set)
             scrollbar.config(command=trans_list.yview)
-    print(pocetneuspesne)
+    
     can.create_text(sirka//4, vyska//10, text='VŠETKY TRANSAKCIE BANKY', font='Arial 20')
     can.create_rectangle(sirka//4-250,vyska//10+35, sirka//4+250, vyska//10+65, fill='forestgreen', width=4)
     can.create_text(sirka//4,vyska//10+50, text='ÚSPEšNé TRANSAKCIE:'+' '+str(pocetuspesne),font='Arial 12', fill='white')
@@ -179,7 +179,7 @@ def statistiky():
     can.create_text(sirka//2+15, vyska//10+170, text='Priemerný počet denných transakcií:', font='Arial 20',anchor='w')
     dlh.close()
 def filterf():
-    global frame, can, root, datumod, cislokarty, poleck, polecu, cislouctu,d,c, cislokarty, cisuctu, cislouctu1, cislokarty1,riadok3, riadok2
+    global frame, can, root, datumod, cislokarty, poleck, polecu, cislouctu,d,c, cislokarty, cisuctu, cislouctu1, cislokarty1,riadok3, riadok2, poles,poledate, poled, datumod, datumdo, sumaod, sumado
     frame.destroy
     can.destroy
     frame=tk.Frame(root,width=sirka, height=vyska)
@@ -201,6 +201,8 @@ def filterf():
     poleck=[]
     poled=[]
     poles=[]
+    poledate=[]
+
     for x in range(50):
         for riadok3 in cislouctu1:
             d=riadok3.split(';')
@@ -216,10 +218,19 @@ def filterf():
             c=riadok2.split(';')
             ciskarty=c[3]
             poleck.append(ciskarty)
-    for i in range(3):
-        trans_list.insert(x*3, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+poled[i])
-        trans_list.insert(x*3+1, 'Číslo Karty'+'  '+poleck[i]+70*' ' +'SUMA'+'  '+poles[i])
-        trans_list.insert(x*3+2, '')
+    for i in range(len(poles)):
+        rozdel = list(poled[i])
+        den=rozdel[0:2]
+        x=''
+        denjoin=x.join(den)
+        mesiac=rozdel[2:4]
+        mesiacjoin=x.join(mesiac)
+        rok=rozdel[4:8]
+        rokjoin=x.join(rok)
+        poledate.append(denjoin+'.'+mesiacjoin+'.'+rokjoin)
+        trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+poledate[i])
+        trans_list.insert(END, 'Číslo Karty'+'  '+poleck[i]+70*' ' +'SUMA'+'  '+poles[i])
+        trans_list.insert(END, '')
     trans_list.config(yscrollcommand=scrollbar.set)
     scrollbar.config(command=trans_list.yview)
 ##................................................................    
@@ -228,7 +239,7 @@ def filterf():
     cislokarty.pack()
     cislokarty.place(x = sirka//4+20 , y = vyska//10)
     
-    can.create_text(sirka//4, vyska//10+45, text='ČÍSLO ÚČTU:', font='Arial 20',anchor='e')
+    can.create_text(sirka//4, vyska//10+55, text='ČÍSLO ÚČTU:', font='Arial 20',anchor='e')
     cislouctu=tk.Entry(font="Helvetica 15 ", width=15)
     cislouctu.pack()
     cislouctu.place(x = sirka//4+20 , y = vyska//10+40)
@@ -243,12 +254,12 @@ def filterf():
     sumado.pack()
     sumado.place(x = sirka//7*6 , y = vyska//10)
     
-    can.create_text(sirka//2+sirka//11, vyska//10+45, text='DÁTUM OD', font='Arial 20',anchor='e')
+    can.create_text(sirka//2+sirka//11, vyska//10+55, text='DÁTUM OD', font='Arial 20',anchor='e')
     datumod=tk.Entry(font="Helvetica 15 ", width=10)
     datumod.pack()
     datumod.place(x = sirka//2+130 , y = vyska//10+40)
     
-    can.create_text(sirka//2+sirka//3, vyska//10+45, text='DÁTUM DO', font='Arial 20',anchor='e')
+    can.create_text(sirka//2+sirka//3, vyska//10+55, text='DÁTUM DO', font='Arial 20',anchor='e')
     datumdo=tk.Entry(font="Helvetica 15 ", width=10)
     datumdo.pack()
     datumdo.place(x = sirka//7*6 , y = vyska//10+40)
@@ -259,8 +270,9 @@ def filterf():
     button3= tk.Button(text='<==',command=spat)
     button3.pack()
     button3.place(relx=.02, rely=.05, anchor="w")
-
-    def kalendar():
+    def kalendar(rozlis1):
+        global rozlis
+        rozlis=rozlis1
         if sys.version[0] == '2':
             import Tkinter as tk
         else:
@@ -372,23 +384,47 @@ def filterf():
 
                 def print_selected_date(self):
                     print(self.data)
-                    datumod = tk.Entry(root)
-                    new_text = "Example text"
-                    datumod.delete(0, tk.END)
-                    datumod.insert(0, self.data)
+                    if rozlis==1:
+                        datumod = tk.Entry(root)
+                        datumod.delete(0, tk.END)
+                    else:
+                        datumdo = tk.Entry(root)
+                        datumdo.delete(0, tk.END)
+                    pom = ''  
+                    pom+=str(self.data['day_selected'])+'.'+str(self.data['month_selected'])+'.'+str(self.data['year_selected'])
+                    print(pom)
+                    change_entry(pom)
             root=tk.Tk()         
             app = Control(root)
-    kalendar=tk.Button(text='kalendár', command=kalendar)
-    kalendar.pack()
-    kalendar.place(relx=.6, rely=.200)
-    
-
+    kalendarod=tk.Button(text='kalendár', command=lambda: kalendar(0))
+    kalendarod.pack()
+    kalendarod.place(relx=.85, rely=.200)
+    kalendardo=tk.Button(text='kalendár', command=lambda: kalendar(1))
+    kalendardo.pack()
+    kalendardo.place(relx=.6, rely=.200)
+def change_entry(pom):
+    global poledatumod, poledatumdo
+    poledatum=[]
+    if rozlis==1:
+        datumod.delete(0, tk.END)
+        datumod.insert(0,pom)
+        poledatumod=pom.split('.')
+        print(poledatumod)
+    else:
+        datumdo.delete(0, tk.END)
+        datumdo.insert(0,pom)
+        poledatumdo=pom.split('.')
+        print(poledatumdo)
 def filtrovat():
-    global frame, can, cislokarty, ciskarty, poleck, polecu, cislouctu
+    global frame, can, cislokarty, ciskarty, poleck, polecu, cislouctu, poled, poles, datumod, datumdo, sumaod, sumado, poledatumod, poledatumdo,can, poledate
     scrollbar = tk.Scrollbar(root)
     scrollbar.place(x=sirka-120,y=200, height=vyska-200, width=20)
     fcisk=cislokarty.get()
     fcisu=cislouctu.get()
+    fdod=datumod.get()
+    fddo=datumdo.get()
+    fsod=sumaod.get()
+    fsdo=sumado.get()
     print(fcisk)
     ##    ...................
     cislokarty1=open('karty.txt', 'r')
@@ -397,27 +433,49 @@ def filtrovat():
     riadok3=cislouctu1.readline().strip()
     trans_list = tk.Listbox(root, font='Arial 15')
     trans_list.place(x=100,y=200,width=sirka-220,height=vyska-200)
-    for x in range(1):
-        for i in range(3):
-            if fcisk==polecu[i]:
-                 trans_list.insert(x*3+1, 'Číslo Účtu'+'  '+poleck[i]+70*' ' +'DÁTUM')
-                 trans_list.insert(x*3, 'Číslo Karty'+'  '+polecu[i]+70*' ' +'SUMA')
-                 trans_list.insert(x*3+2, '')
-            elif fcisu==poleck[i]:
-                 trans_list.insert(x*3+1, 'Číslo Karty'+'  '+polecu[i]+70*' ' +'SUMA')
-                 trans_list.insert(x*3, 'Číslo Účtu'+'  '+poleck[i]+70*' ' +'DÁTUM')
-                 trans_list.insert(x*3+2, '')
-##    for x in range(50):
-##        for riadok3 in cislouctu1:
-##            d=riadok3.split(';')
-##            cisuctu=d[2]
-##            trans_list.insert(x*3+1, 'Číslo Účtu'+'  '+cisuctu+70*' ' +'DÁTUM')
-##            for riadok2 in cislokarty1:
-##                c=riadok2.split(';')
-##                ciskarty=c[3]
-##                trans_list.insert(x*3, 'Číslo Karty'+'  '+ciskarty+70*' ' +'SUMA')
+    poledate=[]
+    for i in range(len(poled)):
+        rozdel = list(poled[i])
+        den=rozdel[0:2]
+        x=''
+        denjoin=x.join(den)
+        mesiac=rozdel[2:4]
+        mesiacjoin=x.join(mesiac)
+        rok=rozdel[4:8]
+        rokjoin=x.join(rok)
+        poledate.append(denjoin+'.'+mesiacjoin+'.'+rokjoin)
+    for i in range(len(poled)):
+        if fcisk==polecu[i]:
+            trans_list.insert(END, 'Číslo Účtu'+'  '+poleck[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
+            trans_list.insert(END, 'Číslo Karty'+'  '+polecu[i]+70*' ' +'SUMA'+'  '+poles[i])
+            trans_list.insert(END, '')
+    for i in range(len(poled)):
+        if fcisu==poleck[i]:
+            trans_list.insert(END, 'Číslo Karty'+'  '+polecu[i]+70*' ' +'SUMA'+'  '+poles[i])
+            trans_list.insert(END, 'Číslo Účtu'+'  '+poleck[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
+            trans_list.insert(END, '')
+##    for i in range(len(poled)):
+##        rozdel = list(poled[i])
+##        den=rozdel[0:2]
+##        x=''
+##        denjoin=x.join(den)
+##        mesiac=rozdel[2:4]
+##        mesiacjoin=x.join(mesiac)
+##        rok=rozdel[4:8]
+##        rokjoin=x.join(rok)
+##        if poledatumod[2]<=rokjoin[i] and poledatumdo[2]>=rokjoin[i]:
+##            if poledatumod[1]<=mesiacjoin[i] and poledatumdo>=mesiacjoin[i]:
+##                if poledatumod[0]<=denjoin[i] and poledatumdo>=denjoin[i]:
+##                    trans_list.insert(END, 'Číslo Účtu'+'  '+poleck[i]+70*' ' +'DÁTUM'+'  '+ poled[i])
+##                    trans_list.insert(END, 'Číslo Karty'+'  '+polecu[i]+70*' ' +'SUMA'+'  '+poles[i])
+##                    trans_list.insert(END, '')
+    for i in range(len(poled)):
+        if int(fsod)<=int(poles[i]) and int(fsdo)>=int(poles[i]):
+            trans_list.insert(END, 'Číslo Karty'+'  '+polecu[i]+70*' ' +'SUMA'+'  '+poles[i])
+            trans_list.insert(END, 'Číslo Účtu'+'  '+poleck[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
+            trans_list.insert(END, '')
         
-    
+        
     trans_list.config(yscrollcommand=scrollbar.set)
     scrollbar.config(command=trans_list.yview)
     
@@ -442,11 +500,13 @@ def odhlasit():
     frame.destroy
     can.destroy
     frame0()
-    login= tk.Button(text='PRIHLÁSIŤ SA',command=frame1)
-    login.pack()
-    login.place(relx=.85, rely=.470, anchor="w")
-    login.config( height =5, width = 20 )
-loginb= tk.Button(text='PRIHLÁSIŤ SA',command=frame1())
+    loginb= tk.Button(text='PRIHLÁSIŤ SA',command=login)
+    loginb.pack()
+    loginb.place(relx=.85, rely=.470, anchor="w")
+    loginb.config( height =5, width = 20 )
+global data
+loginb= tk.Button(text='PRIHLÁSIŤ SA',command=login)
+
 loginb.pack()
 loginb.place(relx=.85, rely=.470, anchor="w")
 loginb.config( height =5, width = 20 )
