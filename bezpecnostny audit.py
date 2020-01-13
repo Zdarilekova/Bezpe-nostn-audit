@@ -8,7 +8,7 @@ vyska=720
 root=tk.Tk()
 canvas=tk.Canvas(root,width=sirka, height=vyska, bg='#71CAE7')
 canvas.pack()
-     
+    
 def frame0():
     global frame, canv,root,menuImg, labelMenuImg, meno, heslo
     
@@ -34,11 +34,20 @@ def login():
     global meno, heslo, canv
     loginName = meno.get()
     loginPassword = heslo.get()
-    print(loginName)
-    if loginName=='mata' and loginPassword=='1234':
-        frame1()
-    else:
-        canv.create_text(sirka//4*3-30, vyska//2+35, text='NESPRÁVNE MENO ALEBO HESLO', fill='red', font='Arial 15')    
+    suborlogin=open('ZAMESTNANCI.txt', 'r')
+    riadoksuborlogin=suborlogin.readline().strip()
+    polelogin=[]
+    for riadoksuborlogin in suborlogin:
+        riadoksuborlogin=riadoksuborlogin.strip()
+        menoaheslo=riadoksuborlogin.split(';')
+        polelogin.append(menoaheslo)
+        print(menoaheslo)
+##        for i in range(len(polelogin)):
+        if loginName==menoaheslo[0] and loginPassword==menoaheslo[1]:
+            frame1()   
+        else:
+            canv.create_text(sirka//4*3-30, vyska//2+35, text='NESPRÁVNE MENO ALEBO HESLO', fill='red', font='Arial 15')
+       
 frame0()
 
 def frame1():
@@ -49,10 +58,10 @@ def frame1():
     can.pack()
     statistiky()
     vtransakcie()
-    button1= tk.Button(text='FILTER',command=filterf)
+    button1= tk.Button(text='FILTER',background = 'black', foreground = "#71CAE7",command=filterf)
     button1.pack()
     button1.place(relx=.02, rely=.100, anchor="w")
-    button3= tk.Button(text='Odhlasit sa',command=odhlasit)
+    button3= tk.Button(text='Odhlasit sa',background = 'black', foreground = "#71CAE7",command=odhlasit)
     button3.pack()
     button3.place(relx=.9, rely=.05, anchor="w")
 
@@ -78,15 +87,13 @@ def vtransakcie():
             
         else:
             pocetneuspesne+=1
-
             trans_list.insert(END, 'Číslo Transakcie'+'  '+l[5])
             trans_list.insert(END, 'Číslo Účtu Obchodníka'+'  '+l[8])
             trans_list.insert(END, '')  
-     
             trans_list.config(yscrollcommand=scrollbar.set)
             scrollbar.config(command=trans_list.yview)
     
-    can.create_text(sirka//4, vyska//10, text='VŠETKY TRANSAKCIE BANKY', font='Arial 20')
+    can.create_text(sirka//4, vyska//10, text='VŠETKY TRANSAKCIE PAYWALL', font='Arial 20')
     can.create_rectangle(sirka//4-250,vyska//10+35, sirka//4+250, vyska//10+65, fill='forestgreen', width=4)
     can.create_text(sirka//4,vyska//10+50, text='ÚSPEšNé TRANSAKCIE:'+' '+str(pocetuspesne),font='Arial 12', fill='white')
     can.create_rectangle(sirka//4-250,vyska//10+85, sirka//4+250, vyska//10+105, fill='firebrick', outline='firebrick', width=5)
@@ -140,37 +147,39 @@ def statistiky():
     for r1 in pvt1:
         h1=r1.split(';')
         pvt11=h1[5]
-        spolu1+=int(pvt11)
-        priemer+=1
+        if int(h1[5])>=0:
+            spolu1+=int(pvt11)
+            priemer+=1
     for r2 in pvt2:
         h2=r2.split(';')
-        pvt22=h2[2]
-        spolu2+=int(pvt22)
-        priemer+=1
-    for r3 in pvt3:
-        h3=r3.split(';')
-        pvt33=h3[2]
-        spolu3+=int(pvt33)
-        priemer+=1
-    spolu=spolu1+spolu2+spolu3
+        pvt22=h2[3]
+        if int(h2[3])>=0:
+            spolu2+=int(pvt22)
+            priemer+=1
+##    for r3 in pvt3:
+##        h3=r3.split(';')
+##        pvt33=h3[3]
+##        pvt333=str(pvt33)//2*2
+##        spolu3+=int(pvt333)
+##        priemer+=1
+    spolu=spolu1+spolu2
     can.create_text(sirka//2+15, vyska//10+130, text='Priemerná výška transakcie:  '+str(spolu//priemer), font='Arial 20',anchor='w')
 ##........................................................................................................................
-##    ppdt=open('TRANSAKCIE_PAYWALL.txt','r')
+##    ppdt=open('TRANSAKCIE_KARTY.txt','r')
 ##    ri1=ppdt.readline().strip()
 ##    poledt=[]
-##    viac=0
+##    viac=1
 ##    for ri1 in ppdt:
 ##        m=ri1.split(';')
 ##        ppdt1=m[1]
 ##        poledt.append(ppdt1)
-##    print(poledt)
-##    for i in ri1:
-##        if int(poledt[i])==int(poledt[i+1]):
-##            viac+=2
-##        else:
-##            viac+=1
+##    if poledt!='':
+##        for i in range(len(poledt)):
+##            if poledt[i]==poledt[i+1]:
+##                viac+=1
 ##    print(viac)
-    can.create_text(sirka//2+15, vyska//10+170, text='Priemerný počet denných transakcií:', font='Arial 20',anchor='w')
+##    priemer=viac//len(poledt)
+    can.create_text(sirka//2+15, vyska//10+170, text='Priemerný počet denných transakcií:  ', font='Arial 20',anchor='w')
     dlh.close()
 def vsetkytlist():
     global frame, can, root, datumod, cislokarty, poleck, polecu, cislouctu,d,c, cislokarty, cisuctu, cislouctu1, cislokarty1,riadok3, riadok2, poles,poledate, poled, datumod, datumdo, sumaod, sumado
@@ -217,8 +226,8 @@ def vsetkytlist():
         rok=rozdel[4:8]
         rokjoin=x.join(rok)
         poledate.append(denjoin+'.'+mesiacjoin+'.'+rokjoin)
-        trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+poledate[i])
         trans_list.insert(END, 'Číslo Karty'+'  '+poleck[i]+70*' ' +'SUMA'+'  '+poles[i])
+        trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+poledate[i])
         trans_list.insert(END, '')
     trans_list.config(yscrollcommand=scrollbar.set)
     scrollbar.config(command=trans_list.yview)
@@ -272,8 +281,8 @@ def filterf():
         rok=rozdel[4:8]
         rokjoin=x.join(rok)
         poledate.append(denjoin+'.'+mesiacjoin+'.'+rokjoin)
-        trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+poledate[i])
         trans_list.insert(END, 'Číslo Karty'+'  '+poleck[i]+70*' ' +'SUMA'+'  '+poles[i])
+        trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+poledate[i])
         trans_list.insert(END, '')
     trans_list.config(yscrollcommand=scrollbar.set)
     scrollbar.config(command=trans_list.yview)
@@ -308,13 +317,13 @@ def filterf():
     datumdo.pack()
     datumdo.place(x = sirka//7*6 , y = vyska//10+40)
     
-    button2= tk.Button(text='FILTROVAŤ',command=filtrovat)
+    button2= tk.Button(text='FILTROVAŤ',background = 'black', foreground = "#71CAE7",command=filtrovat)
     button2.pack()
     button2.place(relx=.9, rely=.250, anchor="w")
     button3= tk.Button(text='<==',command=spat)
     button3.pack()
     button3.place(relx=.02, rely=.05, anchor="w")
-    buttonvsetkytransakcie= tk.Button(text='všetky transakcie', command= vsetkytlist)
+    buttonvsetkytransakcie= tk.Button(text='všetky transakcie',background = 'black', foreground = "#71CAE7", command= vsetkytlist)
     buttonvsetkytransakcie.pack()
     buttonvsetkytransakcie.place(relx=.1, rely=.250, anchor="w")
     def kalendar(rozlis1):
@@ -420,8 +429,8 @@ def filterf():
             class Control:
                 def __init__(self, parent):
                     self.parent = parent
-                    self.choose_btn = tk.Button(self.parent, text='Choose',command=self.popup)
-                    self.show_btn = tk.Button(self.parent, text='Show Selected',command=self.print_selected_date)
+                    self.choose_btn = tk.Button(self.parent, text='VYBER',command=self.popup)
+                    self.show_btn = tk.Button(self.parent, text='VYPÍŠ',command=self.print_selected_date)
                     self.choose_btn.grid()
                     self.show_btn.grid()
                     self.data = {}
@@ -443,10 +452,10 @@ def filterf():
                     change_entry(pom)
             root=tk.Tk()         
             app = Control(root)
-    kalendarod=tk.Button(text='kalendár', command=lambda: kalendar(0))
+    kalendarod=tk.Button(text='kalendár',background = 'black', foreground = "#71CAE7", command=lambda: kalendar(0))
     kalendarod.pack()
     kalendarod.place(relx=.85, rely=.200)
-    kalendardo=tk.Button(text='kalendár', command=lambda: kalendar(1))
+    kalendardo=tk.Button(text='kalendár',background = 'black', foreground = "#71CAE7", command=lambda: kalendar(1))
     kalendardo.pack()
     kalendardo.place(relx=.6, rely=.200)
 def change_entry(pom):
@@ -492,14 +501,6 @@ def filtrovat():
         rokjoin=x.join(rok)
         poledate.append(denjoin+'.'+mesiacjoin+'.'+rokjoin)
     for i in range(len(poled)):
-        if fcisu==polecu[i]:
-            trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
-            trans_list.insert(END, 'Číslo Karty'+'  '+poleck[i]+70*' ' +'SUMA'+'  '+poles[i])
-            trans_list.insert(END, '')
-        if fcisk==poleck[i]:
-            trans_list.insert(END, 'Číslo Karty'+'  '+poleck[i]+70*' ' +'SUMA'+'  '+poles[i])
-            trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
-            trans_list.insert(END, '')
         rozdel = list(poled[i])
         den=rozdel[0:2]
         x=''
@@ -512,6 +513,14 @@ def filtrovat():
         k2=datumdo.get()
         poledatumod=k1.split('.')
         poledatumdo=k2.split('.')
+        if fcisu==polecu[i]:
+            trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
+            trans_list.insert(END, 'Číslo Karty'+'  '+poleck[i]+70*' ' +'SUMA'+'  '+poles[i])
+            trans_list.insert(END, '')
+        if fcisk==poleck[i]:
+            trans_list.insert(END, 'Číslo Karty'+'  '+poleck[i]+70*' ' +'SUMA'+'  '+poles[i])
+            trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
+            trans_list.insert(END, '')
         if fdod!='' and fddo!='':
             x1=datetime.datetime(int(poledatumod[2]),int(poledatumod[1]) , int(poledatumod[0]))
             x2=datetime.datetime(int(poledatumdo[2]),int(poledatumdo[1]) , int(poledatumdo[0]))
@@ -551,10 +560,10 @@ def spat():
     can.pack()
     statistiky()
     vtransakcie()
-    button1= tk.Button(text='FILTER',command=filterf)
+    button1= tk.Button(text='FILTER',background = 'black', foreground = "#71CAE7",command=filterf)
     button1.pack()
     button1.place(relx=.02, rely=.100, anchor="w")
-    button3= tk.Button(text='Odhlasit sa',command=odhlasit)
+    button3= tk.Button(text='Odhlasit sa',background = 'black', foreground = "#71CAE7",command=odhlasit)
     button3.pack()
     button3.place(relx=.9, rely=.05, anchor="w")
 def odhlasit():
@@ -562,13 +571,12 @@ def odhlasit():
     frame.destroy
     can.destroy
     frame0()
-    loginb= tk.Button(text='PRIHLÁSIŤ SA',command=login)
+    loginb= tk.Button(text='PRIHLÁSIŤ SA',background = 'black', foreground = "#71CAE7",command=login)
     loginb.pack()
     loginb.place(relx=.85, rely=.470, anchor="w")
     loginb.config( height =5, width = 20 )
 global data
-loginb= tk.Button(text='PRIHLÁSIŤ SA',command=login)
-
+loginb= tk.Button( text='PRIHLÁSIŤ SA', background = 'black', foreground = "#71CAE7",command=login)
 loginb.pack()
 loginb.place(relx=.85, rely=.470, anchor="w")
 loginb.config( height =5, width = 20 )
