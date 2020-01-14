@@ -61,7 +61,7 @@ def frame1():
     button1= tk.Button(text='FILTER',background = 'black', foreground = "#71CAE7",command=filterf)
     button1.pack()
     button1.place(relx=.02, rely=.100, anchor="w")
-    button3= tk.Button(text='Odhlasit sa',background = 'black', foreground = "#71CAE7",command=odhlasit)
+    button3= tk.Button(text='Odhlásiť sa',background = 'black', foreground = "#71CAE7",command=odhlasit)
     button3.pack()
     button3.place(relx=.9, rely=.05, anchor="w")
 
@@ -80,20 +80,20 @@ def vtransakcie():
     for riadok4 in puspesne:
         riadok4 = riadok4.strip()
         l=riadok4.split(';')
-        cisuspesne=l[9]
+        cisuspesne=l[7]
         poleus.append(cisuspesne)
         if cisuspesne=='1':
             pocetuspesne+=1
             
         else:
             pocetneuspesne+=1
-            trans_list.insert(END, 'Číslo Transakcie'+'  '+l[5])
-            trans_list.insert(END, 'Číslo Účtu Obchodníka'+'  '+l[8])
+            trans_list.insert(END, 'Číslo Transakcie'+'  '+l[3])
+            trans_list.insert(END, 'Číslo Účtu Obchodníka'+'  '+l[6])
             trans_list.insert(END, '')  
             trans_list.config(yscrollcommand=scrollbar.set)
             scrollbar.config(command=trans_list.yview)
     
-    can.create_text(sirka//4, vyska//10, text='VŠETKY TRANSAKCIE PAYWALL', font='Arial 20')
+    can.create_text(sirka//4, vyska//10, text='VŠETKY TRANSAKCIE', font='Arial 20')
     can.create_rectangle(sirka//4-250,vyska//10+35, sirka//4+250, vyska//10+65, fill='forestgreen', width=4)
     can.create_text(sirka//4,vyska//10+50, text='ÚSPEšNé TRANSAKCIE:'+' '+str(pocetuspesne),font='Arial 12', fill='white')
     can.create_rectangle(sirka//4-250,vyska//10+85, sirka//4+250, vyska//10+105, fill='firebrick', outline='firebrick', width=5)
@@ -152,8 +152,8 @@ def statistiky():
             priemer+=1
     for r2 in pvt2:
         h2=r2.split(';')
-        pvt22=h2[3]
-        if int(h2[3])>=0:
+        pvt22=h2[2]
+        if int(h2[2])>=0:
             spolu2+=int(pvt22)
             priemer+=1
 ##    for r3 in pvt3:
@@ -165,21 +165,21 @@ def statistiky():
     spolu=spolu1+spolu2
     can.create_text(sirka//2+15, vyska//10+130, text='Priemerná výška transakcie:  '+str(spolu//priemer), font='Arial 20',anchor='w')
 ##........................................................................................................................
-##    ppdt=open('TRANSAKCIE_KARTY.txt','r')
-##    ri1=ppdt.readline().strip()
-##    poledt=[]
-##    viac=1
-##    for ri1 in ppdt:
-##        m=ri1.split(';')
-##        ppdt1=m[1]
-##        poledt.append(ppdt1)
-##    if poledt!='':
-##        for i in range(len(poledt)):
-##            if poledt[i]==poledt[i+1]:
-##                viac+=1
-##    print(viac)
-##    priemer=viac//len(poledt)
-    can.create_text(sirka//2+15, vyska//10+170, text='Priemerný počet denných transakcií:  ', font='Arial 20',anchor='w')
+    ppdt=open('TRANSAKCIE_PAYWALL.txt','r')
+    ri1=ppdt.readline().strip()
+    poledt=[]
+    viac=1
+    for ri1 in ppdt:
+        m=ri1.split(';')
+        ppdt1=m[8]
+        poledt.append(ppdt1)
+    if poledt!=[]:
+        for i in range(len(poledt)-1):
+            if poledt[i]!=poledt[i+1]:
+                viac+=1
+    print(viac)
+    priemer=len(poledt)//viac
+    can.create_text(sirka//2+15, vyska//10+170, text='Priemerný počet denných transakcií:  '+str(priemer), font='Arial 20',anchor='w')
     dlh.close()
 def vsetkytlist():
     global frame, can, root, datumod, cislokarty, poleck, polecu, cislouctu,d,c, cislokarty, cisuctu, cislouctu1, cislokarty1,riadok3, riadok2, poles,poledate, poled, datumod, datumdo, sumaod, sumado
@@ -208,9 +208,9 @@ def vsetkytlist():
             polecu.append(cisuctu)
             for riadok5 in datum1:
                 t=riadok5.split(';')
-                datum=t[1]
+                datum=t[8]
                 poled.append(datum)
-                suma=t[3]
+                suma=t[2]
                 poles.append(suma)
         for riadok2 in cislokarty1:
             c=riadok2.split(';')
@@ -263,9 +263,9 @@ def filterf():
             polecu.append(cisuctu)
             for riadok5 in datum1:
                 t=riadok5.split(';')
-                datum=t[1]
+                datum=t[8]
                 poled.append(datum)
-                suma=t[3]
+                suma=t[2]
                 poles.append(suma)
         for riadok2 in cislokarty1:
             c=riadok2.split(';')
@@ -320,7 +320,7 @@ def filterf():
     button2= tk.Button(text='FILTROVAŤ',background = 'black', foreground = "#71CAE7",command=filtrovat)
     button2.pack()
     button2.place(relx=.9, rely=.250, anchor="w")
-    button3= tk.Button(text='<==',command=spat)
+    button3= tk.Button(text='<==', background = 'black', foreground = "#71CAE7",command=spat)
     button3.pack()
     button3.place(relx=.02, rely=.05, anchor="w")
     buttonvsetkytransakcie= tk.Button(text='všetky transakcie',background = 'black', foreground = "#71CAE7", command= vsetkytlist)
@@ -563,7 +563,7 @@ def spat():
     button1= tk.Button(text='FILTER',background = 'black', foreground = "#71CAE7",command=filterf)
     button1.pack()
     button1.place(relx=.02, rely=.100, anchor="w")
-    button3= tk.Button(text='Odhlasit sa',background = 'black', foreground = "#71CAE7",command=odhlasit)
+    button3= tk.Button(text='Odhlásiť sa',background = 'black', foreground = "#71CAE7",command=odhlasit)
     button3.pack()
     button3.place(relx=.9, rely=.05, anchor="w")
 def odhlasit():
@@ -582,4 +582,3 @@ loginb.place(relx=.85, rely=.470, anchor="w")
 loginb.config( height =5, width = 20 )
 
 root.mainloop()
-
