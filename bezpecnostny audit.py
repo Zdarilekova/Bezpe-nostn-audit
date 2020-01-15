@@ -69,6 +69,8 @@ def vtransakcie():
     global root,poleus
     can.create_line(sirka//4-200, vyska//10+13,sirka//4+200, vyska//10+13, width=3)
     puspesne=open('TRANSAKCIE_PAYWALL.txt', 'r')
+    puspesne2=open('TRANSAKCIE_KARTY.txt', 'r')
+    puspesne3=open('TRANSAKCIE_UCTY.txt', 'r')
     pocetuspesne=0
     pocetneuspesne=0
     poleus=[]
@@ -166,13 +168,25 @@ def statistiky():
     can.create_text(sirka//2+15, vyska//10+130, text='Priemerná výška transakcie:  '+str(spolu//priemer), font='Arial 20',anchor='w')
 ##........................................................................................................................
     ppdt=open('TRANSAKCIE_PAYWALL.txt','r')
+    ppdt2=open('TRANSAKCIE_UCTY.txt','r')
     ri1=ppdt.readline().strip()
+    ri2=ppdt.readline().strip()
     poledt=[]
     viac=1
     for ri1 in ppdt:
+        ri1=ri1.strip()
         m=ri1.split(';')
         ppdt1=m[8]
         poledt.append(ppdt1)
+    print(poledt)
+    for ri2 in ppdt2:
+        ri2=ri2.strip()
+        ri2=ppdt.readline().strip()
+        gg=ri2.split(';')
+        print(gg)
+        ppdt22=gg[7]
+        poledt.append(ppdt22)
+    print(poledt)
     if poledt!=[]:
         for i in range(len(poledt)-1):
             if poledt[i]!=poledt[i+1]:
