@@ -3,6 +3,7 @@ from tkinter import *
 import calendar
 import datetime
 import sys
+import os
 sirka=1280
 vyska=720
 root=tk.Tk()
@@ -34,20 +35,24 @@ def login():
     global meno, heslo, canv
     loginName = meno.get()
     loginPassword = heslo.get()
-    suborlogin=open('ZAMESTNANCI.txt', 'r')
-    riadoksuborlogin=suborlogin.readline().strip()
-    polelogin=[]
-    for riadoksuborlogin in suborlogin:
-        riadoksuborlogin=riadoksuborlogin.strip()
-        menoaheslo=riadoksuborlogin.split(';')
-        polelogin.append(menoaheslo)
-        print(menoaheslo)
-##        for i in range(len(polelogin)):
-        if loginName==menoaheslo[0] and loginPassword==menoaheslo[1]:
-            frame1()   
-        else:
-            canv.create_text(sirka//4*3-30, vyska//2+35, text='NESPRÁVNE MENO ALEBO HESLO', fill='red', font='Arial 15')
-       
+    if (os.path.exists('ZAMESTNANCI_LOCK.txt')):
+        canvas.after(2000,login)
+    elif(os.path.exists('ZAMESTNANCI_LOCK.txt')==False):
+        zamestnanciLockSubor = open('ZAMESTNANCI_LOCK.txt','w+')
+        suborlogin=open('ZAMESTNANCI.txt', 'r+')
+        riadoksuborlogin=suborlogin.readline().strip()
+        polelogin=[]
+        for riadoksuborlogin in suborlogin:
+            riadoksuborlogin=riadoksuborlogin.strip()
+            menoaheslo=riadoksuborlogin.split(';')
+            polelogin.append(menoaheslo)
+            if loginName==menoaheslo[0] and loginPassword==menoaheslo[1]:
+                frame1()   
+            else:
+                canv.create_text(sirka//4*3-30, vyska//2+35, text='NESPRÁVNE MENO ALEBO HESLO', fill='red', font='Arial 15')
+        suborlogin.close() 
+        zamestnanciLockSubor.close()
+        os.remove('ZAMESTNANCI_LOCK.txt')
 frame0()
 
 def frame1():
@@ -170,7 +175,7 @@ def statistiky():
     ppdt=open('TRANSAKCIE_PAYWALL.txt','r')
     ppdt2=open('TRANSAKCIE_UCTY.txt','r')
     ri1=ppdt.readline().strip()
-    ri2=ppdt.readline().strip()
+    ri2=ppdt2.readline().strip()
     poledt=[]
     viac=1
     for ri1 in ppdt:
@@ -178,15 +183,12 @@ def statistiky():
         m=ri1.split(';')
         ppdt1=m[8]
         poledt.append(ppdt1)
-    print(poledt)
     for ri2 in ppdt2:
         ri2=ri2.strip()
-        ri2=ppdt.readline().strip()
         gg=ri2.split(';')
-        print(gg)
         ppdt22=gg[7]
         poledt.append(ppdt22)
-    print(poledt)
+        
     if poledt!=[]:
         for i in range(len(poledt)-1):
             if poledt[i]!=poledt[i+1]:
