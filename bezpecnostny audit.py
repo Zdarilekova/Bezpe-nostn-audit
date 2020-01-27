@@ -142,8 +142,8 @@ def statistiky():
             ##idst=b[6] ##id suvisiacej transakcie
             suma1=str(suma)
             
-            if int(suma1)>0:
-                vyskav+=int(suma)
+            if float(suma1)>0:
+                vyskav+=float(suma)
                 pocetvkladov+=1
         can.create_text(sirka//2+15, vyska//10+50, text='Priemerná výška vkladu:'+' '+str(vyskav//pocetvkladov), font='Arial 20',anchor='w')
         vklad.close()
@@ -163,7 +163,7 @@ def statistiky():
             a=riadok.split(';')
             dlznasuma=a[7]
             pocetr+=1
-            spolu+=int(dlznasuma)
+            spolu+=float(dlznasuma)
         dlzobap=spolu//pocetr
         can.create_text(sirka//2+15, vyska//10+90, text='Priemerný dlh na kreditnej karte:'+' '+str(dlzobap), font='Arial 20',anchor='w')
         dlh.close()
@@ -190,14 +190,14 @@ def statistiky():
         for r1 in pvt1:
             h1=r1.split(';')
             pvt11=h1[5]
-            if int(h1[5])>=0:
-                spolu1+=int(pvt11)
+            if float(h1[5])>=0:
+                spolu1+=float(pvt11)
                 priemer+=1
         for r2 in pvt2:
             h2=r2.split(';')
             pvt22=h2[2]
-            if int(h2[2])>=0:
-                spolu2+=int(pvt22)
+            if float(h2[2])>=0:
+                spolu2+=float(pvt22)
                 priemer+=1
     ##    for r3 in pvt3:
     ##        h3=r3.split(';')
@@ -627,12 +627,12 @@ def filtrovat():
                 trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+50*' ' +'DÁTUM'+'  '+ poledate[i])
                 trans_list.insert(END, '')
             if fdod!='' and fddo!='':
-                x1=datetime.datetime(int(poledatumod[2]),int(poledatumod[1]) , int(poledatumod[0]))
-                x2=datetime.datetime(int(poledatumdo[2]),int(poledatumdo[1]) , int(poledatumdo[0]))
-                vysl=datetime.datetime(int(rokjoin),int(mesiacjoin) , int(denjoin))
+                x1=datetime.datetime(float(poledatumod[2]),float(poledatumod[1]) , float(poledatumod[0]))
+                x2=datetime.datetime(float(poledatumdo[2]),float(poledatumdo[1]) , float(poledatumdo[0]))
+                vysl=datetime.datetime(float(rokjoin),float(mesiacjoin) , float(denjoin))
                 if x1<=vysl and x2>=vysl:
                     if fsod!=''and fsdo!='':
-                        if int(fsod)<=int(poles[i]) and int(fsdo)>=int(poles[i]):
+                        if float(fsod)<=float(poles[i]) and float(fsdo)>=float(poles[i]):
                             trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+50*' ' +'DÁTUM'+'  '+ poledate[i])
                             trans_list.insert(END, 'Číslo Karty'+'  '+poleck[i]+70*' ' +'SUMA'+'  '+poles[i]+'€')
                             trans_list.insert(END, '')
@@ -642,7 +642,7 @@ def filtrovat():
                         trans_list.insert(END, '')
             else:
                 if fsod!=''and fsdo!='':
-                    if int(fsod)<=int(poles[i]) and int(fsdo)>=int(poles[i]):
+                    if float(fsod)<=float(poles[i]) and float(fsdo)>=float(poles[i]):
                             trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+50*' ' +'DÁTUM'+'  '+ poledate[i])
                             trans_list.insert(END, 'Číslo Karty'+'  '+poleck[i]+70*' ' +'SUMA'+'  '+poles[i]+'€')
                             trans_list.insert(END, '')

@@ -19,4 +19,4 @@
 18;Jano;Estrálny;561923/1352
 19;Hurban;Roman;9467358/1269
 20;Marián;Rebrík;402912/3074
-21;Jano;Drobný;546137/2869
+21;Jano;Drobný;546137/286922
