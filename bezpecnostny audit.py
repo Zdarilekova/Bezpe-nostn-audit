@@ -73,9 +73,12 @@ def frame1():
 def vtransakcie():
     global root,poleus
     can.create_line(sirka//4-200, vyska//10+13,sirka//4+200, vyska//10+13, width=3)
+    scrollbar = tk.Scrollbar(root)
+    scrollbar.place(x=sirka//4+250-2, y=46, height=vyska-200, width=20)
     if (os.path.exists('TRANSAKCIE_PAYWALL_LOCK.txt')) and (os.path.exists('TRANSAKCIE_KARTY_LOCK.txt'))and (os.path.exists('TRANSAKCIE_UCTY_LOCK.txt')):
-        canvas.after(2000,vtransakcie)
+        canvas.after(10000,vtransakcie)
     elif(os.path.exists('TRANSAKCIE_PAYWALL_LOCK.txt')==False) or (os.path.exists('TRANSAKCIE_KARTY_LOCK.txt')==False) or (os.path.exists('TRANSAKCIE_UCTY_LOCK.txt')==False):
+        canvas.after(10000,vtransakcie)
         transakcie_paywall_LockSubor = open('TRANSAKCIE_PAYWALL_LOCK.txt','w+')
         transakcie_karty_LockSubor = open('TRANSAKCIE_KARTY_LOCK.txt','w+')
         transakcie_ucty_LockSubor = open('TRANSAKCIE_UCTY_LOCK.txt','w+')
@@ -86,8 +89,6 @@ def vtransakcie():
         pocetneuspesne=0
         poleus=[]
         riadok4=puspesne.readline().strip()
-        scrollbar = tk.Scrollbar(root)
-        scrollbar.place(x=sirka//4+250-2, y=vyska-6, height=vyska-200, width=20)
         trans_list = tk.Listbox(root, font='Arial 15')
         trans_list.place(x=sirka//4-250+2,y=vyska//10+102+6,width=500,height=vyska-vyska//10+102+6)
         for riadok4 in puspesne:
@@ -100,11 +101,11 @@ def vtransakcie():
                 
             else:
                 pocetneuspesne+=1
-                trans_list.insert(END, 'Číslo Transakcie'+'  '+l[3])
+                trans_list.insert(END, 'Číslo Transakcie'+'  '+l[0])
                 trans_list.insert(END, 'Číslo Účtu Obchodníka'+'  '+l[6])
                 trans_list.insert(END, '')  
-                trans_list.config(yscrollcommand=scrollbar.set)
-                scrollbar.config(command=trans_list.yview)
+        trans_list.config(yscrollcommand=scrollbar.set)
+        scrollbar.config(command=trans_list.yview)
         
         can.create_text(sirka//4, vyska//10, text='VŠETKY TRANSAKCIE', font='Arial 20')
         can.create_rectangle(sirka//4-250,vyska//10+35, sirka//4+250, vyska//10+65, fill='forestgreen', width=4)
@@ -129,8 +130,10 @@ def statistiky():
     can.create_text(sirka//2+sirka//4, vyska//10, text='ŠTATISTIKY', font='Arial 20')
 ##   ............
     if (os.path.exists('TRANSAKCIE_UCTY_LOCK.txt')):
-        canvas.after(2000,statistiky)
+        canvas.after(10000,statistiky)
+        messagebox.showinfo( 'Počkajte pár sekúnd...')
     elif(os.path.exists('TRANSAKCIE_UCTY_LOCK.txt')==False):
+        canvas.after(10000,statistiky)
         transakcie_ucty_LockSubor = open('TRANSAKCIE_UCTY_LOCK.txt','w+')
         vklad=open('TRANSAKCIE_UCTY.txt','r+')
         riadok1=vklad.readline().strip()
@@ -152,8 +155,10 @@ def statistiky():
 
 ## ....................
     if (os.path.exists('KARTY_LOCK.txt')):
-        canvas.after(2000,statistiky)
+        canvas.after(10000,statistiky)
+        messagebox.showinfo( 'Počkajte pár sekúnd...')
     elif(os.path.exists('KARTY_LOCK.txt')==False):
+        canvas.after(10000,statistiky)
         karty_LockSubor = open('KARTY_LOCK.txt','w+')
         dlh=open('KARTY.txt', 'r+')
         riadok=dlh.readline().strip()
@@ -171,8 +176,10 @@ def statistiky():
         os.remove('KARTY_LOCK.txt')
 ##..........................................
     if (os.path.exists('TRANSAKCIE_UCTY_LOCK.txt')) and (os.path.exists('TRANSAKCIE_KARTY_LOCK.txt')) and(os.path.exists('TRANSAKCIE_PAYWALL_LOCK.txt')):
-        canvas.after(2000,statistiky)
+        canvas.after(10000,statistiky)
+        messagebox.showinfo( 'Počkajte pár sekúnd...')
     elif(os.path.exists('TRANSAKCIE_UCTY_LOCK.txt')==False) and (os.path.exists('TRANSAKCIE_KARTY_LOCK.txt')==False) and (os.path.exists('TRANSAKCIE_PAYWALL_LOCK.txt')==False):
+        canvas.after(10000,statistiky)
         transakcie_ucty_LockSubor = open('TRANSAKCIE_UCTY_LOCK.txt','w+')
         transakcie_karty_LockSubor = open('TRANSAKCIE_KARTY_LOCK.txt','w+')
         transakcie_paywall_LockSubor = open('TRANSAKCIE_PAYWALL_LOCK.txt','w+')
@@ -218,8 +225,10 @@ def statistiky():
         os.remove('TRANSAKCIE_KARTY_LOCK.txt')
 ##........................................................................................................................
     if (os.path.exists('TRANSAKCIE_UCTY_LOCK.txt')) and(os.path.exists('TRANSAKCIE_PAYWALL_LOCK.txt')):
-        canvas.after(2000,statistiky)
+        canvas.after(10000,statistiky)
+        messagebox.showinfo( 'Počkajte pár sekúnd...')
     elif(os.path.exists('TRANSAKCIE_UCTY_LOCK.txt')==False)and (os.path.exists('TRANSAKCIE_PAYWALL_LOCK.txt')==False):
+        canvas.after(10000,statistiky)
         transakcie_ucty_LockSubor = open('TRANSAKCIE_UCTY_LOCK.txt','w+')
         transakcie_paywall_LockSubor = open('TRANSAKCIE_PAYWALL_LOCK.txt','w+')
         ppdt=open('TRANSAKCIE_PAYWALL.txt','r+')
@@ -259,115 +268,7 @@ def vsetkytlist():
     scrollbar.place(x=sirka-120,y=200, height=vyska-200, width=20)
     ##    ...................
     if (os.path.exists('TRANSAKCIE_PAYWALL_LOCK.txt')) and(os.path.exists('UCTY_LOCK.txt'))and(os.path.exists('KARTY_LOCK.txt')) and (os.path.exists('TRANSAKCIE_KARTY_LOCK.txt')):
-        canvas.after(2000,statistiky)
-    elif(os.path.exists('UCTY_LOCK.txt')==False)and (os.path.exists('TRANSAKCIE_PAYWALL_LOCK.txt')==False) and (os.path.exists('KARTY_LOCK.txt')==False) and (os.path.exists('TRANSAKCIE_KARTY_LOCK.txt')==False):
-        transakcie_paywall_LockSubor = open('TRANSAKCIE_PAYWALL_LOCK.txt','w+')
-        karty_LockSubor = open('KARTY_LOCK.txt','w+')
-        ucty_LockSubor = open('UCTY_LOCK.txt','w+')
-        transakcie_karty_LockSubor = open('TRANSAKCIE_KARTY_LOCK.txt','w+')
-        cislokarty1=open('KARTY.txt', 'r')
-        riadok2=cislokarty1.readline().strip()
-        cislouctu1=open('UCTY.txt', 'r')
-        riadok3=cislouctu1.readline().strip()
-        datum1=open('TRANSAKCIE_PAYWALL.txt','r')
-        riadok5=datum1.readline().strip()
-        cislokarty2=open('TRANSAKCIE_KARTY.txt', 'r')
-        riadok6=cislokarty2.readline().strip()
-        trans_list = tk.Listbox(root, font='Arial 15')
-        trans_list.place(x=100,y=200,width=sirka-220,height=vyska-200)
-        polecu=[]
-        poleck=[]
-        poled=[]
-        poles=[]
-        poledate=[]
-        poleidkarty=[]
-        poleidkartytk=[]  #pri transakciach kariet
-        polesumatk=[]
-        poleiducetobchodnika=[]
-        poledatumtk=[]
-        poledatumtransakcie=[]
-        for x in range(50):
-##            for riadok3 in cislouctu1:
-##                d=riadok3.split(';')
-##                cisuctu=d[2]
-##                polecu.append(cisuctu)
-            for riadok5 in datum1:
-                t=riadok5.split(';')
-                datum=t[8]
-                poled.append(datum)
-                suma=t[2]
-                poles.append(suma)
-                idkarty=t[1]
-                poleidkarty.append(idkarty)
-                cisuctu=t[6]
-                polecu.append(cisuctu)
-            for riadok2 in cislokarty1:
-                c=riadok2.split(';')
-                ciskarty=c[3]
-                poleck.append(ciskarty)
-            for riadok6 in cislokarty2:
-                tkr=riadok6.split(';')
-                idckokarty=tkr[1]  #pri transakciach kariet
-                poleidkartytk.append(idckokarty)
-                sumatk=tkr[2]
-                polesumatk.append(sumatk)
-                iducetobchodnika=tkr[3]
-                poleiducetobchodnika.append(iducetobchodnika)
-                datum2=tkr[4]
-                poledatumtk.append(datum2)
-        for i in range(len(poles)):
-            rozdel = list(poled[i])
-            den=rozdel[0:2]
-            x=''
-            denjoin=x.join(den)
-            mesiac=rozdel[2:4]
-            mesiacjoin=x.join(mesiac)
-            rok=rozdel[4:8]
-            rokjoin=x.join(rok)
-            poledate.append(denjoin+'.'+mesiacjoin+'.'+rokjoin)
-            trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkarty[i])-1]+70*' ' +'SUMA'+'  '+poles[i]+'€')
-            trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+50*' ' +'DÁTUM'+'  '+poledate[i])
-            trans_list.insert(END, '')
-        for i in range(len(poleidkartytk)):
-            rozdel = list(poledatumtk[i])
-            den=rozdel[0:2]
-            x=''
-            denjoin=x.join(den)
-            mesiac=rozdel[2:4]
-            mesiacjoin=x.join(mesiac)
-            rok=rozdel[4:8]
-            rokjoin=x.join(rok)
-            poledatumtransakcie.append(denjoin+'.'+mesiacjoin+'.'+rokjoin)
-            trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkartytk[i])-1]+70*' ' +'SUMA'+'  '+polesumatk[i]+'€')
-            trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[int(poleiducetobchodnika[i])-1]+50*' ' +'DÁTUM'+'  '+poledatumtransakcie[i])
-            trans_list.insert(END, '')
-        trans_list.config(yscrollcommand=scrollbar.set)
-        scrollbar.config(command=trans_list.yview)
-        datum1.close()
-        transakcie_paywall_LockSubor.close()
-        os.remove('TRANSAKCIE_PAYWALL_LOCK.txt')
-        cislouctu1.close()
-        ucty_LockSubor.close()
-        os.remove('UCTY_LOCK.txt')
-        cislokarty1.close()
-        karty_LockSubor.close()
-        os.remove('KARTY_LOCK.txt')
-        cislokarty2.close()
-        transakcie_karty_LockSubor.close()
-        os.remove('TRANSAKCIE_KARTY_LOCK.txt')
-def filterf():
-    global frame, can, root, datumod, cislokarty, poleck, polecu, cislouctu,d,c, cislokarty,poleidkarty,polesumatk, cisuctu, cislouctu1, cislokarty1,riadok3, riadok2, poles,poledate, poled,poleidkartytk,poleiducetobchodnika,poledatumtk,poledatumtransakcie, datumod, datumdo, sumaod, sumado
-    frame.destroy
-    can.destroy
-    frame=tk.Frame(root,width=sirka, height=vyska)
-    frame.place(x=0,y=0)
-    can=tk.Canvas(frame,width=sirka, height=vyska, bg='#71CAE7')
-    can.pack()
-    scrollbar = tk.Scrollbar(root)
-    scrollbar.place(x=sirka-120,y=200, height=vyska-200, width=20)
-    ##    ...................
-    if (os.path.exists('TRANSAKCIE_PAYWALL_LOCK.txt')) and(os.path.exists('UCTY_LOCK.txt'))and(os.path.exists('KARTY_LOCK.txt')) and (os.path.exists('TRANSAKCIE_KARTY_LOCK.txt')):
-        canvas.after(2000,statistiky)
+        canvas.after(2000,vsetkylist)
     elif(os.path.exists('UCTY_LOCK.txt')==False)and (os.path.exists('TRANSAKCIE_PAYWALL_LOCK.txt')==False) and (os.path.exists('KARTY_LOCK.txt')==False) and (os.path.exists('TRANSAKCIE_KARTY_LOCK.txt')==False):
         transakcie_paywall_LockSubor = open('TRANSAKCIE_PAYWALL_LOCK.txt','w+')
         karty_LockSubor = open('KARTY_LOCK.txt','w+')
@@ -447,7 +348,115 @@ def filterf():
             rokjoin=x.join(rok)
             poledatumtransakcie.append(denjoin+'.'+mesiacjoin+'.'+rokjoin)
             trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkartytk[i])-1]+70*' ' +'SUMA'+'  '+polesumatk[i]+'€')
-            trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[int(poleiducetobchodnika[i])-1]+50*' ' +'DÁTUM'+'  '+poledatumtransakcie[i])
+            trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[int(poleiducetobchodnika[i])-1]+70*' ' +'DÁTUM'+'  '+poledatumtransakcie[i])
+            trans_list.insert(END, '')
+        trans_list.config(yscrollcommand=scrollbar.set)
+        scrollbar.config(command=trans_list.yview)
+        datum1.close()
+        transakcie_paywall_LockSubor.close()
+        os.remove('TRANSAKCIE_PAYWALL_LOCK.txt')
+        cislouctu1.close()
+        ucty_LockSubor.close()
+        os.remove('UCTY_LOCK.txt')
+        cislokarty1.close()
+        karty_LockSubor.close()
+        os.remove('KARTY_LOCK.txt')
+        cislokarty2.close()
+        transakcie_karty_LockSubor.close()
+        os.remove('TRANSAKCIE_KARTY_LOCK.txt')
+def filterf():
+    global frame, can, root, datumod, cislokarty, poleck, polecu, cislouctu,d,c, cislokarty,poleidkarty,polesumatk, cisuctu, cislouctu1, cislokarty1,riadok3, riadok2, poles,poledate, poled,poleidkartytk,poleiducetobchodnika,poledatumtk,poledatumtransakcie, datumod, datumdo, sumaod, sumado
+    frame.destroy
+    can.destroy
+    frame=tk.Frame(root,width=sirka, height=vyska)
+    frame.place(x=0,y=0)
+    can=tk.Canvas(frame,width=sirka, height=vyska, bg='#71CAE7')
+    can.pack()
+    scrollbar = tk.Scrollbar(root)
+    scrollbar.place(x=sirka-120,y=200, height=vyska-200, width=20)
+    ##    ...................
+    if (os.path.exists('TRANSAKCIE_PAYWALL_LOCK.txt')) and(os.path.exists('UCTY_LOCK.txt'))and(os.path.exists('KARTY_LOCK.txt')) and (os.path.exists('TRANSAKCIE_KARTY_LOCK.txt')):
+        canvas.after(2000,filterf)
+    elif(os.path.exists('UCTY_LOCK.txt')==False)and (os.path.exists('TRANSAKCIE_PAYWALL_LOCK.txt')==False) and (os.path.exists('KARTY_LOCK.txt')==False) and (os.path.exists('TRANSAKCIE_KARTY_LOCK.txt')==False):
+        transakcie_paywall_LockSubor = open('TRANSAKCIE_PAYWALL_LOCK.txt','w+')
+        karty_LockSubor = open('KARTY_LOCK.txt','w+')
+        ucty_LockSubor = open('UCTY_LOCK.txt','w+')
+        transakcie_karty_LockSubor = open('TRANSAKCIE_KARTY_LOCK.txt','w+')
+        cislokarty1=open('KARTY.txt', 'r')
+        riadok2=cislokarty1.readline().strip()
+        cislouctu1=open('UCTY.txt', 'r')
+        riadok3=cislouctu1.readline().strip()
+        datum1=open('TRANSAKCIE_PAYWALL.txt','r')
+        riadok5=datum1.readline().strip()
+        cislokarty2=open('TRANSAKCIE_KARTY.txt', 'r')
+        riadok6=cislokarty2.readline().strip()
+        trans_list = tk.Listbox(root, font='Arial 15')
+        trans_list.place(x=100,y=200,width=sirka-220,height=vyska-200)
+        polecu=[]
+        poleck=[]
+        poled=[]
+        poles=[]
+        poledate=[]
+        poleidkarty=[]
+        poleidkartytk=[]  #pri transakciach kariet
+        polesumatk=[]
+        poleiducetobchodnika=[]
+        poledatumtk=[]
+        poledatumtransakcie=[]
+        for x in range(50):
+##            for riadok3 in cislouctu1:
+##                d=riadok3.split(';')
+##                cisuctu=d[2]
+##                polecu.append(cisuctu)
+            for riadok5 in datum1:
+                t=riadok5.split(';')
+                datum=t[8]
+                poled.append(datum)
+                suma=t[2]
+                poles.append(suma)
+                idkarty=t[1]
+                poleidkarty.append(idkarty)
+                cisuctu=t[6]
+                polecu.append(cisuctu)
+            for riadok2 in cislokarty1:
+                c=riadok2.split(';')
+                ciskarty=c[3]
+                poleck.append(ciskarty)
+            for riadok6 in cislokarty2:
+                tkr=riadok6.split(';')
+                idckokarty=tkr[1]  #pri transakciach kariet
+                poleidkartytk.append(idckokarty)
+                sumatk=tkr[2]
+                polesumatk.append(sumatk)
+                iducetobchodnika=tkr[3]
+                poleiducetobchodnika.append(iducetobchodnika)
+                datum2=tkr[4]
+                poledatumtk.append(datum2)
+        for i in range(len(poles)):
+            rozdel = list(poled[i])
+            den=rozdel[0:2]
+            x=''
+            denjoin=x.join(den)
+            mesiac=rozdel[2:4]
+            mesiacjoin=x.join(mesiac)
+            rok=rozdel[4:8]
+            rokjoin=x.join(rok)
+            poledate.append(denjoin+'.'+mesiacjoin+'.'+rokjoin)
+            trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkarty[i])-1]+70*' ' +'SUMA'+'  '+poles[i]+'€')
+            trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+poledate[i])
+            trans_list.insert(END, '')
+        for i in range(len(poleidkartytk)):
+            rozdel = list(poledatumtk[i])
+            den=rozdel[0:2]
+            x=''
+            denjoin=x.join(den)
+            mesiac=rozdel[2:4]
+            mesiacjoin=x.join(mesiac)
+            rok=rozdel[4:8]
+            rokjoin=x.join(rok)
+            poledatumtransakcie.append(denjoin+'.'+mesiacjoin+'.'+rokjoin)
+            trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkartytk[i])-1]+70*' ' +'SUMA'+'  '+polesumatk[i]+'€')
+            trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[int(poleiducetobchodnika[i])-1]+70*' ' +'DÁTUM'+'  '+poledatumtransakcie[i])
             trans_list.insert(END, '')
         trans_list.config(yscrollcommand=scrollbar.set)
         scrollbar.config(command=trans_list.yview)
@@ -661,7 +670,7 @@ def filtrovat():
     print(fcisk)
     ##    ...................
     if (os.path.exists('UCTY_LOCK.txt'))and(os.path.exists('KARTY_LOCK.txt')):
-        canvas.after(2000,statistiky)
+        canvas.after(2000,filtrovat)
     elif(os.path.exists('UCTY_LOCK.txt')==False)and (os.path.exists('KARTY_LOCK.txt')==False):
         karty_LockSubor = open('KARTY_LOCK.txt','w+')
         ucty_LockSubor = open('UCTY_LOCK.txt','w+')

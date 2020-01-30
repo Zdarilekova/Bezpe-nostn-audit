@@ -1,6 +1,6 @@
 21
 1;Jano;Mrkva;761201/1234
-2;Maros;Klamár;880812/4453
+2;Maroš;Klamár;880812/4453
 3;Jano;Zapotockarsky;010811/5532
 4;Dominik;Majdl;285230/0785
 5;František;Somarínar;441156/7200
