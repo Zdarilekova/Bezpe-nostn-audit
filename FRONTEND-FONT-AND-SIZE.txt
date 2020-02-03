@@ -1,0 +1,26 @@
+LOGIN SCREEN
+- Obrazok vlavo + (popr. content na pravej strane)
+- Nadpis: "Arial 30"
+- Podnadpis: "Arial 20"
+- popripade Podnadpis2: "Arial 16"
+
+------------------------------------------------------------------------------
+ENTRY a BUTTON fonty:
+tkinter.Entry(width=30,font = "Helvetica 15 bold")
+entryID.place(height=30)
+
+tkinter.Button(font="Helvetica 15")
+
+-----------------------------------------------------------------------------
+MAIN SCREEN:
+- Podnadpis: "Arial 20" ## velkost +- 1,2
+- V pripade ze potrebujete pouzit treti font (okrem Arialu, ktory sa pouziva na text a Helvetici na Entry a Buttony)
+tak pouzite Courier
+- Okrem loginu/zaciatocneho screenu sa obrazok nemusi inde vyskytovat
+- Ak chcete, dajte si tam vlastne, podobne logo
+- FARBA: #71CAE7
+- LINK NA 	OBRAZOK: https://we.tl/t-wsVrw2geaG
+
+
+
+

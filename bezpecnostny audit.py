@@ -71,14 +71,13 @@ def frame1():
     button3.place(relx=.9, rely=.05, anchor="w")
 
 def vtransakcie():
-    global root,poleus
+    global root,poleus, can, vyska, sirka
     can.create_line(sirka//4-200, vyska//10+13,sirka//4+200, vyska//10+13, width=3)
     scrollbar = tk.Scrollbar(root)
-    scrollbar.place(x=sirka//4+250-2, y=46, height=vyska-200, width=20)
+    scrollbar.place(x=sirka//4+250-2, y=vyska//10+102+6, height=vyska-vyska//10+102+6, width=20)
     if (os.path.exists('TRANSAKCIE_PAYWALL_LOCK.txt')) and (os.path.exists('TRANSAKCIE_KARTY_LOCK.txt'))and (os.path.exists('TRANSAKCIE_UCTY_LOCK.txt')):
         canvas.after(10000,vtransakcie)
     elif(os.path.exists('TRANSAKCIE_PAYWALL_LOCK.txt')==False) or (os.path.exists('TRANSAKCIE_KARTY_LOCK.txt')==False) or (os.path.exists('TRANSAKCIE_UCTY_LOCK.txt')==False):
-        canvas.after(10000,vtransakcie)
         transakcie_paywall_LockSubor = open('TRANSAKCIE_PAYWALL_LOCK.txt','w+')
         transakcie_karty_LockSubor = open('TRANSAKCIE_KARTY_LOCK.txt','w+')
         transakcie_ucty_LockSubor = open('TRANSAKCIE_UCTY_LOCK.txt','w+')
@@ -133,7 +132,6 @@ def statistiky():
         canvas.after(10000,statistiky)
         messagebox.showinfo( 'Počkajte pár sekúnd...')
     elif(os.path.exists('TRANSAKCIE_UCTY_LOCK.txt')==False):
-        canvas.after(10000,statistiky)
         transakcie_ucty_LockSubor = open('TRANSAKCIE_UCTY_LOCK.txt','w+')
         vklad=open('TRANSAKCIE_UCTY.txt','r+')
         riadok1=vklad.readline().strip()
@@ -158,7 +156,6 @@ def statistiky():
         canvas.after(10000,statistiky)
         messagebox.showinfo( 'Počkajte pár sekúnd...')
     elif(os.path.exists('KARTY_LOCK.txt')==False):
-        canvas.after(10000,statistiky)
         karty_LockSubor = open('KARTY_LOCK.txt','w+')
         dlh=open('KARTY.txt', 'r+')
         riadok=dlh.readline().strip()
@@ -176,10 +173,9 @@ def statistiky():
         os.remove('KARTY_LOCK.txt')
 ##..........................................
     if (os.path.exists('TRANSAKCIE_UCTY_LOCK.txt')) and (os.path.exists('TRANSAKCIE_KARTY_LOCK.txt')) and(os.path.exists('TRANSAKCIE_PAYWALL_LOCK.txt')):
-        canvas.after(10000,statistiky)
+        canvas.after(5000,statistiky)
         messagebox.showinfo( 'Počkajte pár sekúnd...')
     elif(os.path.exists('TRANSAKCIE_UCTY_LOCK.txt')==False) and (os.path.exists('TRANSAKCIE_KARTY_LOCK.txt')==False) and (os.path.exists('TRANSAKCIE_PAYWALL_LOCK.txt')==False):
-        canvas.after(10000,statistiky)
         transakcie_ucty_LockSubor = open('TRANSAKCIE_UCTY_LOCK.txt','w+')
         transakcie_karty_LockSubor = open('TRANSAKCIE_KARTY_LOCK.txt','w+')
         transakcie_paywall_LockSubor = open('TRANSAKCIE_PAYWALL_LOCK.txt','w+')
@@ -225,10 +221,9 @@ def statistiky():
         os.remove('TRANSAKCIE_KARTY_LOCK.txt')
 ##........................................................................................................................
     if (os.path.exists('TRANSAKCIE_UCTY_LOCK.txt')) and(os.path.exists('TRANSAKCIE_PAYWALL_LOCK.txt')):
-        canvas.after(10000,statistiky)
+        canvas.after(5000,statistiky)
         messagebox.showinfo( 'Počkajte pár sekúnd...')
     elif(os.path.exists('TRANSAKCIE_UCTY_LOCK.txt')==False)and (os.path.exists('TRANSAKCIE_PAYWALL_LOCK.txt')==False):
-        canvas.after(10000,statistiky)
         transakcie_ucty_LockSubor = open('TRANSAKCIE_UCTY_LOCK.txt','w+')
         transakcie_paywall_LockSubor = open('TRANSAKCIE_PAYWALL_LOCK.txt','w+')
         ppdt=open('TRANSAKCIE_PAYWALL.txt','r+')
@@ -251,7 +246,6 @@ def statistiky():
             for i in range(len(poledt)-1):
                 if poledt[i]!=poledt[i+1]:
                     viac+=1
-        print(viac)
         priemer=len(poledt)//viac
         can.create_text(sirka//2+15, vyska//10+170, text='Priemerný počet denných transakcií:  '+str(priemer), font='Arial 20',anchor='w')
         ppdt.close()
@@ -263,7 +257,6 @@ def statistiky():
 ##.....................................    
 def vsetkytlist():
     global frame, can, root, datumod, cislokarty, poleck, polecu, cislouctu,d,c, cislokarty, cisuctu, cislouctu1, cislokarty1,riadok3, riadok2, poles,poledate, poled, datumod, datumdo, sumaod, sumado
-
     scrollbar = tk.Scrollbar(root)
     scrollbar.place(x=sirka-120,y=200, height=vyska-200, width=20)
     ##    ...................
