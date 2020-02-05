@@ -13,7 +13,6 @@ checkInterval = 2000
     
 def frame0():
     global frame, canv,root,menuImg, labelMenuImg, meno, heslo
-    
     frame=tk.Frame(root,width=sirka, height=vyska)
     frame.place(x=0,y=0)
     canv=tk.Canvas(frame,width=sirka, height=vyska, bg='#71CAE7')
@@ -75,7 +74,7 @@ def vtransakcie():
     global root,poleus, can, vyska, sirka, pauseLoading, version, version2
     can.create_line(sirka//4-200, vyska//10+13,sirka//4+200, vyska//10+13, width=3)
     scrollbar = tk.Scrollbar(root)
-    scrollbar.place(x=sirka//4+250-2, y=vyska//10+102+6, height=vyska-vyska//10+102+6, width=20)
+    scrollbar.place(x=sirka//4+250-15, y=vyska//10+102+6, height=500, width=20)
     if (os.path.exists('TRANSAKCIE_PAYWALL_LOCK.txt')) and (os.path.exists('TRANSAKCIE_KARTY_LOCK.txt'))and (os.path.exists('TRANSAKCIE_UCTY_LOCK.txt')):
         canvas.after(10000,vtransakcie)
     elif(os.path.exists('TRANSAKCIE_PAYWALL_LOCK.txt')==False) or (os.path.exists('TRANSAKCIE_KARTY_LOCK.txt')==False) or (os.path.exists('TRANSAKCIE_UCTY_LOCK.txt')==False):
@@ -90,7 +89,7 @@ def vtransakcie():
         poleus=[]
         riadok4=puspesne.readline().strip()
         trans_list = tk.Listbox(root, font='Arial 15')
-        trans_list.place(x=sirka//4-250+2,y=vyska//10+102+6,width=500,height=vyska-vyska//10+102+6)
+        trans_list.place(x=sirka//4-250+2,y=180,width=487,height=500)
         for riadok4 in puspesne:
             riadok4 = riadok4.strip()
             l=riadok4.split(';')
@@ -112,8 +111,8 @@ def vtransakcie():
         can.create_text(sirka//4,vyska//10+50, text='ÚSPEšNé TRANSAKCIE:'+' '+str(pocetuspesne),font='Arial 12', fill='white')
         can.create_rectangle(sirka//4-250,vyska//10+85, sirka//4+250, vyska//10+105, fill='firebrick', outline='firebrick', width=5)
         can.create_text(sirka//4,vyska//10+95, text='NEÚSPEšNé TRANSAKCIE: '+str(pocetneuspesne),font='Arial 12', fill='white')
-        can.create_rectangle(sirka//4-250,vyska//10+102+4,sirka//4+250, vyska-4, outline='firebrick', width=5)
-        can.create_rectangle(sirka//4-250+2,vyska//10+102+6,sirka//4+250-2, vyska-6, outline='black', width=4, fill='white')
+        can.create_rectangle(sirka//4-250,vyska//10+102+4,sirka//4+250, 685, outline='firebrick', width=5)
+        can.create_rectangle(sirka//4-250+2,vyska//10+102+6,sirka//4+250-2, 683, outline='black', width=4)
         can.create_line(sirka//2,0,sirka//2,vyska,width=3)
         puspesne.close()
         puspesne2.close()
@@ -724,16 +723,97 @@ def filtrovat():
             k2=datumdo.get()
             poledatumod=k1.split('.')
             poledatumdo=k2.split('.')
-            if fcisu==polecu[i]:
-                if fcisu.replace('.','').isdigit():
-                    trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
-                    trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkarty[i])-1]+70*' ' +'SUMA'+'  '+poles[i]+'€')
-                    trans_list.insert(END, '')
-            if fcisk==poleck[int(poleidkarty[i])-1]:
-                if fcisk.replace('.','').isdigit():
-                    trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkarty[i])-1]+70*' ' +'SUMA'+'  '+poles[i]+'€')
-                    trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
-                    trans_list.insert(END, '')
+            if fcisu!='':
+                if fcisu==polecu[i]:
+                    if fcisu.replace('.','').isdigit():
+                        if fcisk!='':        
+                            if fcisk==poleck[int(poleidkarty[i])-1]:
+                                if fcisk.replace('.','').isdigit():
+                                    if fdod!='' and fddo!='':
+                                        if fdod.replace('.','').isdigit() and fddo.replace('.','').isdigit():
+                                            x1=datetime.datetime(int(poledatumod[2]),int(poledatumod[1]) , int(poledatumod[0]))
+                                            x2=datetime.datetime(int(poledatumdo[2]),int(poledatumdo[1]) , int(poledatumdo[0]))
+                                            vysl=datetime.datetime(int(rokjoin),int(mesiacjoin) , int(denjoin))
+                                            if x1<=vysl and x2>=vysl:
+                                                if fsod!=''and fsdo!='':
+                                                    if fsod.replace('.','').isdigit() and fsdo.replace('.','').isdigit():
+                                                        if float(fsod)<=float(poles[i]) and float(fsdo)>=float(poles[i]):
+                                                            trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
+                                                            trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkarty[i])-1]+70*' ' +'SUMA'+'  '+poles[i]+'€')
+                                                            trans_list.insert(END, '')
+                                                else:
+                                                    trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
+                                                    trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkarty[i])-1]+70*' ' +'SUMA'+'  '+poles[i]+'€')
+                                                    trans_list.insert(END, '')
+                        ##                            limitMessageBox = messagebox.showinfo('Odhlásenie.', 'Úspešne ste sa odhlásili.')
+                                    elif fsod!=''and fsdo!='':
+                                        if fsod.replace('.','').isdigit() and fsdo.replace('.','').isdigit():
+                                            if float(fsod)<=float(polesumatk[i]) and float(fsdo)>=float(polesumatk[i]):
+                                                trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkarty[i])-1]+70*' ' +'SUMA'+'  '+poles[i]+'€')
+                                                trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
+                                                trans_list.insert(END, '')
+                                    else:
+                                        trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkarty[i])-1]+70*' ' +'SUMA'+'  '+poles[i]+'€')
+                                        trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
+                                        trans_list.insert(END, '')
+                        if fdod!='' and fddo!='':
+                            if fdod.replace('.','').isdigit() and fddo.replace('.','').isdigit():
+                                x1=datetime.datetime(int(poledatumod[2]),int(poledatumod[1]) , int(poledatumod[0]))
+                                x2=datetime.datetime(int(poledatumdo[2]),int(poledatumdo[1]) , int(poledatumdo[0]))
+                                vysl=datetime.datetime(int(rokjoin),int(mesiacjoin) , int(denjoin))
+                                if x1<=vysl and x2>=vysl:
+                                    if fsod!=''and fsdo!='':
+                                        if fsod.replace('.','').isdigit() and fsdo.replace('.','').isdigit():
+                                            if float(fsod)<=float(poles[i]) and float(fsdo)>=float(poles[i]):
+                                                trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
+                                                trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkarty[i])-1]+70*' ' +'SUMA'+'  '+poles[i]+'€')
+                                                trans_list.insert(END, '')
+                                    else:
+                                        trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
+                                        trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkarty[i])-1]+70*' ' +'SUMA'+'  '+poles[i]+'€')
+                                        trans_list.insert(END, '')
+                ##                      limitMessageBox = messagebox.showinfo('Odhlásenie.', 'Úspešne ste sa odhlásili.')
+                        elif fsod!=''and fsdo!='':
+                            if fsod.replace('.','').isdigit() and fsdo.replace('.','').isdigit():
+                                if float(fsod)<=float(poles[i]) and float(fsdo)>=float(poles[i]):
+                                        trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
+                                        trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkarty[i])-1]+70*' ' +'SUMA'+'  '+poles[i]+'€')
+                                        trans_list.insert(END, '')
+                        else:
+                            trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
+                            trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkarty[i])-1]+70*' ' +'SUMA'+'  '+poles[i]+'€')
+                            trans_list.insert(END, '')
+            if fcisk!='':        
+                if fcisk==poleck[int(poleidkarty[i])-1]:
+                    if fcisk.replace('.','').isdigit():
+                        if fdod!='' and fddo!='':
+                            if fdod.replace('.','').isdigit() and fddo.replace('.','').isdigit():
+                                x1=datetime.datetime(int(poledatumod[2]),int(poledatumod[1]) , int(poledatumod[0]))
+                                x2=datetime.datetime(int(poledatumdo[2]),int(poledatumdo[1]) , int(poledatumdo[0]))
+                                vysl=datetime.datetime(int(rokjoin),int(mesiacjoin) , int(denjoin))
+                                if x1<=vysl and x2>=vysl:
+                                    if fsod!=''and fsdo!='':
+                                        if fsod.replace('.','').isdigit() and fsdo.replace('.','').isdigit():
+                                            if float(fsod)<=float(poles[i]) and float(fsdo)>=float(poles[i]):
+                                                trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
+                                                trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkarty[i])-1]+70*' ' +'SUMA'+'  '+poles[i]+'€')
+                                                trans_list.insert(END, '')
+                                    else:
+                                        trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
+                                        trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkarty[i])-1]+70*' ' +'SUMA'+'  '+poles[i]+'€')
+                                        trans_list.insert(END, '')
+            ##                            limitMessageBox = messagebox.showinfo('Odhlásenie.', 'Úspešne ste sa odhlásili.')
+                        elif fsod!=''and fsdo!='':
+                            if fsod.replace('.','').isdigit() and fsdo.replace('.','').isdigit():
+                                if float(fsod)<=float(polesumatk[i]) and float(fsdo)>=float(polesumatk[i]):
+                                    trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkarty[i])-1]+70*' ' +'SUMA'+'  '+poles[i]+'€')
+                                    trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
+                                    trans_list.insert(END, '')
+                        else:
+                            trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkarty[i])-1]+70*' ' +'SUMA'+'  '+poles[i]+'€')
+                            trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
+                            trans_list.insert(END, '')
+                           
             if fdod!='' and fddo!='':
                 if fdod.replace('.','').isdigit() and fddo.replace('.','').isdigit():
                     x1=datetime.datetime(int(poledatumod[2]),int(poledatumod[1]) , int(poledatumod[0]))
@@ -750,9 +830,8 @@ def filtrovat():
                             trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
                             trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkarty[i])-1]+70*' ' +'SUMA'+'  '+poles[i]+'€')
                             trans_list.insert(END, '')
-##                            limitMessageBox = messagebox.showinfo('Odhlásenie.', 'Úspešne ste sa odhlásili.')
-            else:
-                if fsod!=''and fsdo!='':
+        ##                      limitMessageBox = messagebox.showinfo('Odhlásenie.', 'Úspešne ste sa odhlásili.')
+            if fsod!=''and fsdo!='':
                     if fsod.replace('.','').isdigit() and fsdo.replace('.','').isdigit():
                         if float(fsod)<=float(poles[i]) and float(fsdo)>=float(poles[i]):
                                 trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[i]+70*' ' +'DÁTUM'+'  '+ poledate[i])
@@ -773,16 +852,96 @@ def filtrovat():
             poledatumod=k1.split('.')
             poledatumdo=k2.split('.')
             poledatumtransakcie.append(denjoin+'.'+mesiacjoin+'.'+rokjoin)
-            if fcisu==polecu[int(poleiducetobchodnika[i])-1]:
-                if fcisu.replace('.','').isdigit():
-                    trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[int(poleiducetobchodnika[i])-1]+70*' ' +'DÁTUM'+'  '+poledatumtransakcie[i])
-                    trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkartytk[i])-1]+70*' ' +'SUMA'+'  '+polesumatk[i]+'€')
-                    trans_list.insert(END, '')
-            if fcisk==poleck[int(poleidkartytk[i])-1]:
-                if fcisk.replace('.','').isdigit():
-                    trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkartytk[i])-1]+70*' ' +'SUMA'+'  '+polesumatk[i]+'€')
-                    trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[int(poleiducetobchodnika[i])-1]+70*' ' +'DÁTUM'+'  '+poledatumtransakcie[i])
-                    trans_list.insert(END, '')
+            if fcisu!='':
+                if fcisu==polecu[int(poleiducetobchodnika[i])-1]:
+                    if fcisu.replace('.','').isdigit():
+                        if fcisk!='':
+                            if fcisk==poleck[int(poleidkartytk[i])-1]:
+                                if fcisk.replace('.','').isdigit():
+                                    if fdod!='' and fddo!='':
+                                        if fdod.replace('.','').isdigit() and fddo.replace('.','').isdigit():
+                                            x1=datetime.datetime(int(poledatumod[2]),int(poledatumod[1]) , int(poledatumod[0]))
+                                            x2=datetime.datetime(int(poledatumdo[2]),int(poledatumdo[1]) , int(poledatumdo[0]))
+                                            vysl=datetime.datetime(int(rokjoin),int(mesiacjoin) , int(denjoin))
+                                            if x1<=vysl and x2>=vysl:
+                                                if fsod!=''and fsdo!='':
+                                                    if fsod.replace('.','').isdigit() and fsdo.replace('.','').isdigit():
+                                                        if float(fsod)<=float(polesumatk[i]) and float(fsdo)>=float(polesumatk[i]):
+                                                            trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[int(poleiducetobchodnika[i])-1]+70*' ' +'DÁTUM'+'  '+poledatumtransakcie[i])
+                                                            trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkartytk[i])-1]+70*' ' +'SUMA'+'  '+polesumatk[i]+'€')
+                                                            trans_list.insert(END, '')
+                                                else:
+                                                    trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[int(poleiducetobchodnika[i])-1]+70*' ' +'DÁTUM'+'  '+poledatumtransakcie[i])
+                                                    trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkartytk[i])-1]+70*' ' +'SUMA'+'  '+polesumatk[i]+'€')
+                                                    trans_list.insert(END, '')
+                                    elif fsod!=''and fsdo!='':
+                                        if fsod.replace('.','').isdigit() and fsdo.replace('.','').isdigit():
+                                            if float(fsod)<=float(polesumatk[i]) and float(fsdo)>=float(polesumatk[i]):
+                                                    trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[int(poleiducetobchodnika[i])-1]+70*' ' +'DÁTUM'+'  '+poledatumtransakcie[i])
+                                                    trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkartytk[i])-1]+70*' ' +'SUMA'+'  '+polesumatk[i]+'€')
+                                                    trans_list.insert(END, '')
+                                    else:
+                                        trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkartytk[i])-1]+70*' ' +'SUMA'+'  '+polesumatk[i]+'€')
+                                        trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[int(poleiducetobchodnika[i])-1]+70*' ' +'DÁTUM'+'  '+poledatumtransakcie[i])
+                                        trans_list.insert(END, '')
+        
+                        elif fdod!='' and fddo!='':
+                                if fdod.replace('.','').isdigit() and fddo.replace('.','').isdigit():
+                                    x1=datetime.datetime(int(poledatumod[2]),int(poledatumod[1]) , int(poledatumod[0]))
+                                    x2=datetime.datetime(int(poledatumdo[2]),int(poledatumdo[1]) , int(poledatumdo[0]))
+                                    vysl=datetime.datetime(int(rokjoin),int(mesiacjoin) , int(denjoin))
+                                    if x1<=vysl and x2>=vysl:
+                                        if fsod!=''and fsdo!='':
+                                            if fsod.replace('.','').isdigit() and fsdo.replace('.','').isdigit():
+                                                if float(fsod)<=float(polesumatk[i]) and float(fsdo)>=float(polesumatk[i]):
+                                                    trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[int(poleiducetobchodnika[i])-1]+70*' ' +'DÁTUM'+'  '+poledatumtransakcie[i])
+                                                    trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkartytk[i])-1]+70*' ' +'SUMA'+'  '+polesumatk[i]+'€')
+                                                    trans_list.insert(END, '')
+                                        else:
+                                            trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[int(poleiducetobchodnika[i])-1]+70*' ' +'DÁTUM'+'  '+poledatumtransakcie[i])
+                                            trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkartytk[i])-1]+70*' ' +'SUMA'+'  '+polesumatk[i]+'€')
+                                            trans_list.insert(END, '')        
+                        elif fsod!=''and fsdo!='':
+                            if fsod.replace('.','').isdigit() and fsdo.replace('.','').isdigit():
+                                if float(fsod)<=float(polesumatk[i]) and float(fsdo)>=float(polesumatk[i]):
+                                    trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[int(poleiducetobchodnika[i])-1]+70*' ' +'DÁTUM'+'  '+poledatumtransakcie[i])
+                                    trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkartytk[i])-1]+70*' ' +'SUMA'+'  '+polesumatk[i]+'€')
+                                    trans_list.insert(END, '')
+                        else:
+                            trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[int(poleiducetobchodnika[i])-1]+70*' ' +'DÁTUM'+'  '+poledatumtransakcie[i])
+                            trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkartytk[i])-1]+70*' ' +'SUMA'+'  '+polesumatk[i]+'€')
+                            trans_list.insert(END, '')
+            if fcisk!='':
+                if fcisk==poleck[int(poleidkartytk[i])-1]:
+                    if fcisk.replace('.','').isdigit():
+                        if fdod!='' and fddo!='':
+                            if fdod.replace('.','').isdigit() and fddo.replace('.','').isdigit():
+                                x1=datetime.datetime(int(poledatumod[2]),int(poledatumod[1]) , int(poledatumod[0]))
+                                x2=datetime.datetime(int(poledatumdo[2]),int(poledatumdo[1]) , int(poledatumdo[0]))
+                                vysl=datetime.datetime(int(rokjoin),int(mesiacjoin) , int(denjoin))
+                                if x1<=vysl and x2>=vysl:
+                                    if fsod!=''and fsdo!='':
+                                        if fsod.replace('.','').isdigit() and fsdo.replace('.','').isdigit():
+                                            if float(fsod)<=float(polesumatk[i]) and float(fsdo)>=float(polesumatk[i]):
+                                                trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[int(poleiducetobchodnika[i])-1]+70*' ' +'DÁTUM'+'  '+poledatumtransakcie[i])
+                                                trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkartytk[i])-1]+70*' ' +'SUMA'+'  '+polesumatk[i]+'€')
+                                                trans_list.insert(END, '')
+                                    else:
+                                        trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[int(poleiducetobchodnika[i])-1]+70*' ' +'DÁTUM'+'  '+poledatumtransakcie[i])
+                                        trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkartytk[i])-1]+70*' ' +'SUMA'+'  '+polesumatk[i]+'€')
+                                        trans_list.insert(END, '')
+                        elif fsod!=''and fsdo!='':
+                            if fsod.replace('.','').isdigit() and fsdo.replace('.','').isdigit():
+                                if float(fsod)<=float(polesumatk[i]) and float(fsdo)>=float(polesumatk[i]):
+                                        trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[int(poleiducetobchodnika[i])-1]+70*' ' +'DÁTUM'+'  '+poledatumtransakcie[i])
+                                        trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkartytk[i])-1]+70*' ' +'SUMA'+'  '+polesumatk[i]+'€')
+                                        trans_list.insert(END, '')
+                        else:
+                            trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkartytk[i])-1]+70*' ' +'SUMA'+'  '+polesumatk[i]+'€')
+                            trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[int(poleiducetobchodnika[i])-1]+70*' ' +'DÁTUM'+'  '+poledatumtransakcie[i])
+                            trans_list.insert(END, '')
+
+            
             if fdod!='' and fddo!='':
                 if fdod.replace('.','').isdigit() and fddo.replace('.','').isdigit():
                     x1=datetime.datetime(int(poledatumod[2]),int(poledatumod[1]) , int(poledatumod[0]))
@@ -799,13 +958,12 @@ def filtrovat():
                             trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[int(poleiducetobchodnika[i])-1]+70*' ' +'DÁTUM'+'  '+poledatumtransakcie[i])
                             trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkartytk[i])-1]+70*' ' +'SUMA'+'  '+polesumatk[i]+'€')
                             trans_list.insert(END, '')
-            else:
-                if fsod!=''and fsdo!='':
-                    if fsod.replace('.','').isdigit() and fsdo.replace('.','').isdigit():
-                        if float(fsod)<=float(polesumatk[i]) and float(fsdo)>=float(polesumatk[i]):
-                                trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[int(poleiducetobchodnika[i])-1]+70*' ' +'DÁTUM'+'  '+poledatumtransakcie[i])
-                                trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkartytk[i])-1]+70*' ' +'SUMA'+'  '+polesumatk[i]+'€')
-                                trans_list.insert(END, '')  
+            if fsod!=''and fsdo!='':
+                if fsod.replace('.','').isdigit() and fsdo.replace('.','').isdigit():
+                    if float(fsod)<=float(polesumatk[i]) and float(fsdo)>=float(polesumatk[i]):
+                            trans_list.insert(END, 'Číslo Účtu'+'  '+polecu[int(poleiducetobchodnika[i])-1]+70*' ' +'DÁTUM'+'  '+poledatumtransakcie[i])
+                            trans_list.insert(END, 'Číslo Karty'+'  '+poleck[int(poleidkartytk[i])-1]+70*' ' +'SUMA'+'  '+polesumatk[i]+'€')
+                            trans_list.insert(END, '')  
         trans_list.config(yscrollcommand=scrollbar.set)
         scrollbar.config(command=trans_list.yview)
         cislouctu1.close()
