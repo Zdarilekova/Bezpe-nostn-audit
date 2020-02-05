@@ -9,6 +9,7 @@ vyska=720
 root=tk.Tk()
 canvas=tk.Canvas(root,width=sirka, height=vyska, bg='#71CAE7')
 canvas.pack()
+checkInterval = 2000
     
 def frame0():
     global frame, canv,root,menuImg, labelMenuImg, meno, heslo
@@ -71,7 +72,7 @@ def frame1():
     button3.place(relx=.9, rely=.05, anchor="w")
 
 def vtransakcie():
-    global root,poleus, can, vyska, sirka
+    global root,poleus, can, vyska, sirka, pauseLoading, version, version2
     can.create_line(sirka//4-200, vyska//10+13,sirka//4+200, vyska//10+13, width=3)
     scrollbar = tk.Scrollbar(root)
     scrollbar.place(x=sirka//4+250-2, y=vyska//10+102+6, height=vyska-vyska//10+102+6, width=20)
@@ -122,9 +123,38 @@ def vtransakcie():
         transakcie_ucty_LockSubor.close()
         os.remove('TRANSAKCIE_PAYWALL_LOCK.txt')
         os.remove('TRANSAKCIE_KARTY_LOCK.txt')    
-        os.remove('TRANSAKCIE_UCTY_LOCK.txt')    
+        os.remove('TRANSAKCIE_UCTY_LOCK.txt')
+        version = version2 = []
+        pauseLoading = False
+        timer()
+
+def timer():
+    global pauseLoading, version, checkInterval, version2
+    if pauseLoading == True:
+        None
+    elif pauseLoading == False:
+        file = open('TRANSAKCIE_KARTY_VERZIA.txt', 'r+')
+        file2 = open('TRANSAKCIE_PAYWALL_VERZIA.txt', 'r+')
+        file3 = open('TRANSAKCIE_UCTY_VERZIA.txt', 'r+')
+        file4 = open('KARTY_VERZIA.txt', 'r+')
+        if version == []:
+            version = file.readline().strip() + file2.readline().strip() + file3.readline().strip()+ file4.readline().strip()
+            print('first')
+            can.after(checkInterval, timer)
+        else:
+            version2 = file.readline().strip() + file2.readline().strip() + file3.readline().strip()+ file4.readline().strip()
+            print(version)
+            print(version2)
+            if version2 != version:
+                print('verzia!!')
+                pauseLoading = False
+                vtransakcie()
+            else:
+                print('after')
+                can.after(checkInterval, timer)
 
 def statistiky():
+    global pauseLoading, version, checkInterval, version2
     can.create_rectangle(sirka//2+200, vyska//10-20,sirka//2+435, vyska//10+13, width=3, fill='white')
     can.create_text(sirka//2+sirka//4, vyska//10, text='ŠTATISTIKY', font='Arial 20')
 ##   ............
@@ -254,6 +284,9 @@ def statistiky():
         ppdt2.close()
         transakcie_paywall_LockSubor.close()
         os.remove('TRANSAKCIE_PAYWALL_LOCK.txt')
+    version = version2 = []
+    pauseLoading = False
+    timer()
 ##.....................................    
 def vsetkytlist():
     global frame, can, root, datumod, cislokarty, poleck, polecu, cislouctu,d,c, cislokarty, cisuctu, cislouctu1, cislokarty1,riadok3, riadok2, poles,poledate, poled, datumod, datumdo, sumaod, sumado
@@ -360,7 +393,7 @@ def vsetkytlist():
         transakcie_karty_LockSubor.close()
         os.remove('TRANSAKCIE_KARTY_LOCK.txt')
 def filterf():
-    global frame, can, root, datumod, cislokarty, poleck, polecu, cislouctu,d,c, cislokarty,poleidkarty,polesumatk, cisuctu, cislouctu1, cislokarty1,riadok3, riadok2, poles,poledate, poled,poleidkartytk,poleiducetobchodnika,poledatumtk,poledatumtransakcie, datumod, datumdo, sumaod, sumado
+    global frame, pauseLoading, can, root, datumod, cislokarty, poleck, polecu, cislouctu,d,c, cislokarty,poleidkarty,polesumatk, cisuctu, cislouctu1, cislokarty1,riadok3, riadok2, poles,poledate, poled,poleidkartytk,poleiducetobchodnika,poledatumtk,poledatumtransakcie, datumod, datumdo, sumaod, sumado
     frame.destroy
     can.destroy
     frame=tk.Frame(root,width=sirka, height=vyska)
@@ -369,6 +402,7 @@ def filterf():
     can.pack()
     scrollbar = tk.Scrollbar(root)
     scrollbar.place(x=sirka-120,y=200, height=vyska-200, width=20)
+    pauseLoading = True
     ##    ...................
     if (os.path.exists('TRANSAKCIE_PAYWALL_LOCK.txt')) and(os.path.exists('UCTY_LOCK.txt'))and(os.path.exists('KARTY_LOCK.txt')) and (os.path.exists('TRANSAKCIE_KARTY_LOCK.txt')):
         canvas.after(2000,filterf)
@@ -797,9 +831,10 @@ def spat():
     button3.pack()
     button3.place(relx=.9, rely=.05, anchor="w")
 def odhlasit():
-    global frame, canv
+    global frame, canv, pauseLoading
     frame.destroy
     can.destroy
+    pauseLoading = True
     frame0()
     loginb= tk.Button(text='PRIHLÁSIŤ SA',background = 'black', foreground = "#71CAE7",command=login)
     loginb.pack()
