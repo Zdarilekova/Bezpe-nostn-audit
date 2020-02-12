@@ -1,4 +1,4 @@
-21
+25
 1;Jano;Mrkva;761201/1234
 2;Maroš;Klamár;880812/4453
 3;Jano;Zapotockarsky;010811/5532
@@ -8,7 +8,7 @@
 7;Romana;Tralová;796900/3720
 8;Romana;Volnovièová;255227/1473
 9;Jano;Maroš;301391/0095
-10;Anastázia;Pekná;438675/0167
+10;Anastázia;Pegná;438675/0167
 11;Jano;Mrkva;399533/6262
 12;Jano;Samuelson;083568/2672
 13;Jano;Jakuboviè;981324/2284
@@ -19,4 +19,8 @@
 18;Jano;Estrálny;561923/1352
 19;Hurban;Roman;9467358/1269
 20;Marián;Rebrík;402912/3074
-21;Jano;Drobný;546137/286922
+21;Jano;Drobný;546137/2869
+22;Samo;Jegay;010303/2492
+23;a;a;123123/4566
+24;dsa;dsadsa;777777/7777
+25;ahoj;jasom;456456/4565
