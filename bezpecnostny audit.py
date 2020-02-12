@@ -148,7 +148,6 @@ def timer():
                 print('verzia!!')
                 pauseLoading = False
                 vtransakcie()
-                statistiky()
             else:
                 print('after')
                 can.after(checkInterval, timer)
@@ -176,7 +175,6 @@ def statistiky():
             if float(suma1)>0:
                 vyskav+=float(suma)
                 pocetvkladov+=1
-        can.create_rectangle(sirka//2+5, vyska//10+40,sirka, vyska//10+60,fill="#71CAE7", outline="#71CAE7")
         can.create_text(sirka//2+15, vyska//10+50, text='Priemerná výška vkladu:'+' '+str(vyskav//pocetvkladov), font='Arial 20',anchor='w')
         vklad.close()
         transakcie_ucty_LockSubor.close()
@@ -198,7 +196,6 @@ def statistiky():
             pocetr+=1
             spolu+=float(dlznasuma)
         dlzobap=spolu//pocetr
-        can.create_rectangle(sirka//2+5, vyska//10+80,sirka, vyska//10+100,fill="#71CAE7", outline="#71CAE7")
         can.create_text(sirka//2+15, vyska//10+90, text='Priemerný dlh na kreditnej karte:'+' '+str(dlzobap), font='Arial 20',anchor='w')
         dlh.close()
         karty_LockSubor.close()
@@ -241,7 +238,6 @@ def statistiky():
                 spolu3+=float(pvt33)
                 priemer+=1
         spolu=spolu1+spolu2+spolu3
-        can.create_rectangle(sirka//2+5, vyska//10+120,sirka, vyska//10+140,fill="#71CAE7", outline="#71CAE7")
         can.create_text(sirka//2+15, vyska//10+130, text='Priemerná výška transakcie:  '+str(spolu//priemer), font='Arial 20',anchor='w')
         pvt1.close()
         transakcie_ucty_LockSubor.close()
@@ -280,7 +276,6 @@ def statistiky():
                 if poledt[i]!=poledt[i+1]:
                     viac+=1
         priemer=len(poledt)//viac
-        can.create_rectangle(sirka//2+5, vyska//10+160,sirka, vyska//10+180,fill="#71CAE7", outline="#71CAE7")
         can.create_text(sirka//2+15, vyska//10+170, text='Priemerný počet denných transakcií:  '+str(priemer), font='Arial 20',anchor='w')
         ppdt.close()
         transakcie_ucty_LockSubor.close()
